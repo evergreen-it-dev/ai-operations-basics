@@ -11,6 +11,7 @@ cp workspace.example/teams-access.yaml workspace/teams-access.yaml
 cp workspace.example/teams-chats.yaml workspace/teams-chats.yaml
 cp workspace.example/telegram-access.yaml workspace/telegram-access.yaml
 cp workspace.example/TASKS.md.example workspace/TASKS.md
+cp workspace.example/operations.md.example workspace/operations.md
 cp workspace.example/keys/google.example workspace/keys/google
 cp workspace.example/keys/jira-onprem.example workspace/keys/jira-onprem
 cp workspace.example/keys/folio.example workspace/keys/folio
@@ -31,6 +32,7 @@ cp workspace.example/keys/figma.example workspace/keys/figma
 4. Продукти. Репозиторій продукту — submodule у `context/products/<product-name>/`. Скіл `products`. Доку з вікі — пункт 1, не копія коду в `context/company/`.
 5. Tone of voice. Підключи Gmail, Telegram, Teams і систему задач. Скіл `tone-of-voice` збирає 20–30 власних повідомлень (по 5 листів 1-1, чатів 1-1, груп і задач) і пише `workspace/my_voice.md`. Файл локальний, у git не класти.
 6. Teammates і персони. Ті самі канали. Скіл `personas` дивиться, з ким є листування, і пише в `workspace/personas.md`, хто це і чим займається. Імена в git не класти.
+7. Реєстр операцій. Скіл `operations-analysis` зводить календар, чати, пошту, задачі Jira і затреканий час. Пише `workspace/operations.md`. Файл локальний.
 
 ## Figma
 

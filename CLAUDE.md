@@ -35,7 +35,8 @@
 | [`google-drive-tools`](.cursor/rules/google-drive-tools.mdc) | Активація: Google Drive, папка на диску, drive_tool. Спільний OAuth з Gmail, skill google-drive-tools. |
 | [`google-oauth-identity`](.cursor/rules/google-oauth-identity.mdc) | Перед Gmail і Drive перевірити, що OAuth-токен належить email з workspace/user.md. Якщо інший акаунт — стоп і явне підтвердження. |
 | [`mermaid-flowcharts`](.cursor/rules/mermaid-flowcharts.mdc) | Активація: Mermaid, flowchart, блок-схема, діаграма процесу, graph у Markdown. Перед блоком mermaid — skill mermaid-flowcharts. |
-| [`onboarding`](.cursor/rules/onboarding.mdc) | Загальні питання про компанію, політики, відпустки, «де це написано». Спочатку skill onboarding і context/onboarding. Сетап репозиторію: Confluence, Figma, макети, доки продуктів, tone of voice, персони — workspace.example/README.md. |
+| [`onboarding`](.cursor/rules/onboarding.mdc) | Загальні питання про компанію, політики, відпустки, «де це написано». Спочатку skill onboarding і context/onboarding. Сетап репозиторію: Confluence, Figma, макети, доки продуктів, tone of voice, персони, реєстр операцій — workspace.example/README.md. |
+| [`operations-analysis`](.cursor/rules/operations-analysis.mdc) | Активація: реєстр операцій, чим я зайнятий, operations.md, календар і чати за місяць, затреканий час, /operations-analysis. |
 | [`personas`](.cursor/rules/personas.mdc) | Активація: персони, teammates, з ким листуюсь, хто в команді, /personas. Люди з чатів і листів, без вигаданих ролей. |
 | [`products`](.cursor/rules/products.mdc) | Активація: код або доки продукту, context/products, репозиторій продукту. Тека context/products/<product-name> — git submodule, окремий клон репо. |
 | [`teams-privacy`](.cursor/rules/teams-privacy.mdc) | Політика приватності Microsoft Teams: не читати особисті чати, не сканувати весь Teams. Разом із teams-review і teams-chat-review. |

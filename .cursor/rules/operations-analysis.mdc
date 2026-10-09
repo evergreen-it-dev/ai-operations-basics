@@ -1,0 +1,12 @@
+---
+description: >-
+  Активація: реєстр операцій, чим я зайнятий, operations.md, календар і чати
+  за місяць, затреканий час, /operations-analysis.
+alwaysApply: false
+---
+
+# Реєстр операцій
+
+Запит зібрати, чим людина зайнята, — skill `.cursor/skills/operations-analysis/SKILL.md`.
+
+Канали: календар, Teams, Telegram, пошта, Jira і worklog. У `workspace/operations.md` пиши після підтвердження. Години без worklog і календаря не вигадуй.

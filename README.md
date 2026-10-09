@@ -25,6 +25,7 @@
 | Текст | `humor-writer`, субагент `writing-editor` | — |
 | Голос | `tone-of-voice` | `workspace/my_voice.md` |
 | Люди | `personas` | `workspace/personas.md` |
+| Операції | `operations-analysis` | `workspace/operations.md` |
 | Діаграми | `mermaid-flowcharts` | — |
 | Дизайн | `figma`, `design-md`, `design-handoff`, `design-critique` | `context/design/` |
 
