@@ -21,6 +21,15 @@ cp workspace.example/keys/figma.example workspace/keys/figma
 
 Після копіювання заміни плейсхолдери. Секрети в git не класти.
 
+## Що зробити далі
+
+Підключи джерела і зніми локальні копії. Немає URL або токена — спитай, не вигадуй хост і репозиторій.
+
+1. Confluence. Заповни `workspace/keys/confluence`. Стягни доку проєктів і продуктів скілом `confluence-import` у `context/docs/confluence/<спейс>/`. Потрібен URL спейсу або кореневої сторінки.
+2. Figma. Заповни `workspace/keys/figma`. Як випустити токен — розділ нижче.
+3. Макети. Опиши їх у `context/design/catalog.yaml` і `context/design/<figma-name>/design.md`: екрани і компоненти з параметрами. Скіл `figma`.
+4. Продукти. Репозиторій продукту — submodule у `context/products/<product-name>/`. Скіл `products`. Доку з вікі — пункт 1, не копія коду в `context/company/`.
+
 ## Figma
 
 Щоб читати макети, потрібен personal access token. Один рядок у `workspace/keys/figma`. У git не класти.
