@@ -35,10 +35,11 @@
 | [`google-drive-tools`](.cursor/rules/google-drive-tools.mdc) | Активація: Google Drive, папка на диску, drive_tool. Спільний OAuth з Gmail, skill google-drive-tools. |
 | [`google-oauth-identity`](.cursor/rules/google-oauth-identity.mdc) | Перед Gmail і Drive перевірити, що OAuth-токен належить email з workspace/user.md. Якщо інший акаунт — стоп і явне підтвердження. |
 | [`mermaid-flowcharts`](.cursor/rules/mermaid-flowcharts.mdc) | Активація: Mermaid, flowchart, блок-схема, діаграма процесу, graph у Markdown. Перед блоком mermaid — skill mermaid-flowcharts. |
-| [`onboarding`](.cursor/rules/onboarding.mdc) | Загальні питання про компанію, політики, відпустки, «де це написано». Спочатку skill onboarding і context/onboarding. Сетап репозиторію: Confluence, Figma, макети, доки продуктів — workspace.example/README.md. |
+| [`onboarding`](.cursor/rules/onboarding.mdc) | Загальні питання про компанію, політики, відпустки, «де це написано». Спочатку skill onboarding і context/onboarding. Сетап репозиторію: Confluence, Figma, макети, доки продуктів, tone of voice — workspace.example/README.md. |
 | [`products`](.cursor/rules/products.mdc) | Активація: код або доки продукту, context/products, репозиторій продукту. Тека context/products/<product-name> — git submodule, окремий клон репо. |
 | [`teams-privacy`](.cursor/rules/teams-privacy.mdc) | Політика приватності Microsoft Teams: не читати особисті чати, не сканувати весь Teams. Разом із teams-review і teams-chat-review. |
 | [`teams-review`](.cursor/rules/teams-review.mdc) | Активація: Teams, непрочитані, нові чати, /teams, teams review. Питання про Microsoft Teams — skill teams-chat-review. |
 | [`telegram-mcp`](.cursor/rules/telegram-mcp.mdc) | Активація: Telegram, непрочитані, особисті чати, /telegram. Лише локальний MCP у tools/telegram-mcp. Папки-виключення — workspace/telegram-access.yaml. |
+| [`tone-of-voice`](.cursor/rules/tone-of-voice.mdc) | Активація: tone of voice, голос, my_voice, як я пишу, /tone-of-voice. Спочатку Gmail, Telegram, Teams. Корпус — лише тексти користувача. |
 
 <!-- END GENERATED: rules-index -->

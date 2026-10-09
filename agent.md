@@ -7,6 +7,7 @@
 5. Код і доки продукту — `context/products/<product-name>/`. Це git submodule: окремий клон репозиторію продукту. Skill — `.cursor/skills/products/SKILL.md`.
 6. Макети Figma — `context/design/catalog.yaml` і `context/design/<figma-name>/design.md`. Спочатку локальний знімок. Skill — `.cursor/skills/figma/SKILL.md`.
 7. Дизайн-система — `context/design/<slug>/DESIGN.md`. Skill — `.cursor/skills/design-md/SKILL.md`.
+8. Голос автора — `workspace/my_voice.md`. Якщо файл порожній, на онбордингу збери його скілом `tone-of-voice`.
 
 Секрети лише в `workspace/keys/`. Токен Figma — `workspace/keys/figma`, як випустити — `workspace.example/README.md`. Реєстр Teams — `workspace/teams-chats.yaml`.
 

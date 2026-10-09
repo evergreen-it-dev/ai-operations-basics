@@ -29,6 +29,7 @@ cp workspace.example/keys/figma.example workspace/keys/figma
 2. Figma. Заповни `workspace/keys/figma`. Як випустити токен — розділ нижче.
 3. Макети. Опиши їх у `context/design/catalog.yaml` і `context/design/<figma-name>/design.md`: екрани і компоненти з параметрами. Скіл `figma`.
 4. Продукти. Репозиторій продукту — submodule у `context/products/<product-name>/`. Скіл `products`. Доку з вікі — пункт 1, не копія коду в `context/company/`.
+5. Tone of voice. Підключи Gmail, Telegram, Teams і систему задач. Скіл `tone-of-voice` збирає 20–30 власних повідомлень (по 5 листів 1-1, чатів 1-1, груп і задач) і пише `workspace/my_voice.md`. Файл локальний, у git не класти.
 
 ## Figma
 

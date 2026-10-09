@@ -1,0 +1,12 @@
+---
+description: >-
+  Активація: tone of voice, голос, my_voice, як я пишу, /tone-of-voice.
+  Спочатку Gmail, Telegram, Teams. Корпус — лише тексти користувача.
+alwaysApply: false
+---
+
+# Tone of voice
+
+Запит зібрати голос — skill `.cursor/skills/tone-of-voice/SKILL.md`.
+
+Не починай збір, поки не підключені Gmail, Telegram і Teams. Профіль пиши в `workspace/my_voice.md` з 20–30 його власних повідомлень. Чужі репліки в профіль не копіюй.
