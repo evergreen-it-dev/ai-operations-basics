@@ -2,11 +2,11 @@
 
 Каркас того, як агент у Cursor веде операційну роботу: правила, skills, локальні ключі, скрипти каналів.
 
-Це зріз для показу. Git не ініціалізовано, remote немає, нікуди не запушено.
+Це зріз для показу. Репозиторій приватний: `evergreen-it-dev/ai-operations-basics`.
 
 ## Як це зібрано
 
-Агент читає `.cursor/rules/` завжди або за темою, і skill у `.cursor/skills/<name>/SKILL.md`, коли запит збігається з описом. Секрети й реєстри чатів живуть у `workspace/` (не в git). Шаблони — `workspace.example/`. Факти компанії — `context/company/`. Політики — `context/onboarding/`.
+Агент читає `.cursor/rules/` завжди або за темою, і skill у `.cursor/skills/<name>/SKILL.md`, коли запит збігається з описом. Секрети й реєстри чатів живуть у `workspace/` (не в git). Шаблони — `workspace.example/`. Факти компанії — `context/company/`. Політики — `context/onboarding/`. Код і доки продукту — `context/products/<product-name>/`: це git submodule, окремий клон репозиторію продукту.
 
 ## Що всередині
 
@@ -19,6 +19,8 @@
 | Drive | `google-drive-tools` | `tools/google` |
 | Вікі | `folio` | `tools/folio` |
 | Онбординг компанії | `onboarding` | `context/onboarding/` |
+| Confluence | `confluence-import` | `tools/confluence-import` → `context/docs/confluence/` |
+| Продукти | `products` | `context/products/<product-name>/` (git submodule) |
 | Задачі | `productivity-update` | `workspace/TASKS.md` |
 | Текст | `humor-writer`, субагент `writing-editor` | — |
 | Діаграми | `mermaid-flowcharts` | — |

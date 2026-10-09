@@ -1,0 +1,14 @@
+---
+description: >-
+  Активація: вигрузити Confluence, імпорт спейсу, коренева сторінка Confluence,
+  confluence import, /confluence-import. REST-скрипт, не MCP.
+alwaysApply: false
+---
+
+# Імпорт Confluence
+
+Запит на масове вивантаження Confluence — skill `.cursor/skills/confluence-import/SKILL.md`.
+
+Якщо в запиті немає URL спейсу або кореневої сторінки — запитай його і не запускай скрипт. Хост не вгадувати.
+
+Токен лише з `workspace/keys/confluence`. Результат — `context/docs/confluence/<назва-спейсу>/`.

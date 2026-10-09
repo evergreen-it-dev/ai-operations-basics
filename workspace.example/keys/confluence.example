@@ -1,0 +1,6 @@
+# cp workspace.example/keys/confluence.example workspace/keys/confluence
+#
+# On-prem PAT (Bearer). Cloud: додай CONFLUENCE_EMAIL, тоді токен піде як Basic.
+
+CONFLUENCE_TOKEN=
+# CONFLUENCE_EMAIL=user@company.example

@@ -1,0 +1,12 @@
+---
+description: >-
+  Активація: код або доки продукту, context/products, репозиторій продукту.
+  Тека context/products/<product-name> — git submodule, окремий клон репо.
+alwaysApply: false
+---
+
+# Продукти
+
+Код і доки — skill `.cursor/skills/products/SKILL.md`.
+
+`context/products/<product-name>/` — git submodule: окремий клон репозиторію продукту. Батьківський репозиторій тримає коміт, не копію історії.

@@ -15,6 +15,7 @@ cp workspace.example/keys/google.example workspace/keys/google
 cp workspace.example/keys/jira-onprem.example workspace/keys/jira-onprem
 cp workspace.example/keys/folio.example workspace/keys/folio
 cp workspace.example/keys/telegram.example workspace/keys/telegram
+cp workspace.example/keys/confluence.example workspace/keys/confluence
 ```
 
 Після копіювання заміни плейсхолдери. Секрети в git не класти.

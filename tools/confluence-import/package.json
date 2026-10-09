@@ -1,0 +1,14 @@
+{
+  "name": "confluence-import",
+  "private": true,
+  "type": "module",
+  "description": "Bulk Confluence space or page tree to Markdown via REST.",
+  "scripts": {
+    "import": "node import.mjs",
+    "test": "node --test"
+  },
+  "dependencies": {
+    "turndown": "^7.2.2",
+    "turndown-plugin-gfm": "^1.0.2"
+  }
+}
