@@ -28,6 +28,7 @@
 | Операції | `operations-analysis` | `workspace/operations.md` |
 | Пам'ять | `workspace-chat-memory` | `workspace/memory/` |
 | База про агентів | `onboarding` | `context/onboarding/ai-basics/` |
+| Разова задача | `one-off-tasks` | `tasks/<task-name>/task.md` |
 | Діаграми | `mermaid-flowcharts` | — |
 | Дизайн | `figma`, `design-md`, `design-handoff`, `design-critique` | `context/design/` |
 

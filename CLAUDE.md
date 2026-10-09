@@ -17,7 +17,7 @@
 Прочитай ці файли на початку сесії — вони задають мову, контекст і поведінку:
 
 - **[`general-writing`](.cursor/rules/general-writing.mdc)** — Загальні правила письма агента: без слопу, головне зверху, без інлайн-коду посеред речення. Перед чернеткою читай context/company/personas.md, за наявності workspace/personas.md, і workspace/my_voice.md. Чернетка людині назовні — через субагента writing-editor (спочатку знахідки слопу, потім правка).
-- **[`one-off-tasks`](.cursor/rules/one-off-tasks.mdc)** — Разові задачі: тека tasks/<short-name> у корені репозиторію; не в git; підпапки data/scripts/output/docs/articles; попередити, що це тимчасове.
+- **[`one-off-tasks`](.cursor/rules/one-off-tasks.mdc)** — Разова задача ні до чого конкретного: tasks/<task-name>/ з task.md і всіма файлами цієї задачі. Тека не в git.
 - **[`reply-language`](.cursor/rules/reply-language.mdc)** — Мова відповідей береться з workspace/user.md (поле Language). Нові документи — тією ж мовою, що й аудиторія тексту. Іншу мову — лише за явним запитом.
 - **[`workspace-context`](.cursor/rules/workspace-context.mdc)** — Перед узагальненою відповіддю про користувача або компанію читай workspace/user.md і context/company/. Код продукту — context/products/<product-name>, git submodule. Макети Figma — context/design, локальний знімок. Не вигадуй імена, ролі й факти.
 
