@@ -26,6 +26,8 @@
 | Голос | `tone-of-voice` | `workspace/my_voice.md` |
 | Люди | `personas` | `workspace/personas.md` |
 | Операції | `operations-analysis` | `workspace/operations.md` |
+| Пам'ять | `workspace-chat-memory` | `workspace/memory/` |
+| База про агентів | `onboarding` | `context/onboarding/ai-basics/` |
 | Діаграми | `mermaid-flowcharts` | — |
 | Дизайн | `figma`, `design-md`, `design-handoff`, `design-critique` | `context/design/` |
 

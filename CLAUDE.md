@@ -43,5 +43,6 @@
 | [`teams-review`](.cursor/rules/teams-review.mdc) | Активація: Teams, непрочитані, нові чати, /teams, teams review. Питання про Microsoft Teams — skill teams-chat-review. |
 | [`telegram-mcp`](.cursor/rules/telegram-mcp.mdc) | Активація: Telegram, непрочитані, особисті чати, /telegram. Лише локальний MCP у tools/telegram-mcp. Папки-виключення — workspace/telegram-access.yaml. |
 | [`tone-of-voice`](.cursor/rules/tone-of-voice.mdc) | Активація: tone of voice, голос, my_voice, як я пишу, /tone-of-voice. Спочатку Gmail, Telegram, Teams. Корпус — лише тексти користувача. |
+| [`workspace-chat-memory`](.cursor/rules/workspace-chat-memory.mdc) | Активація: пам'ять, memory, журнал чатів, що ми вже робили. Журнал у workspace/memory, пише хук, не агент. |
 
 <!-- END GENERATED: rules-index -->

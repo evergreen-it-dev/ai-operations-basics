@@ -1,0 +1,12 @@
+---
+description: >-
+  Активація: пам'ять, memory, журнал чатів, що ми вже робили.
+  Журнал у workspace/memory, пише хук, не агент.
+alwaysApply: false
+---
+
+# Пам'ять чатів
+
+Журнал — `workspace/memory/YYYY-MM-DD.yaml`. Як він пишеться — skill `.cursor/skills/workspace-chat-memory/SKILL.md`.
+
+Хук уже стоїть у `.cursor/hooks.json`. Не проси людину «запам'ятати» хід окремо: він має лягти в журнал сам. Якщо файлу за сьогодні немає — скажи, що хук не відпрацював, і не вигадуй історію.

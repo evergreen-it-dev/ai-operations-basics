@@ -1,0 +1,41 @@
+{
+  "version": 1,
+  "hooks": {
+    "beforeSubmitPrompt": [
+      {
+        "command": "python3 .cursor/hooks/workspace_memory_turn.py"
+      }
+    ],
+    "afterAgentResponse": [
+      {
+        "command": "python3 .cursor/hooks/workspace_memory_turn.py",
+        "timeout": 120
+      }
+    ],
+    "afterAgentThought": [
+      {
+        "command": "python3 .cursor/hooks/workspace_memory_turn.py"
+      }
+    ],
+    "postToolUse": [
+      {
+        "command": "python3 .cursor/hooks/workspace_memory_turn.py"
+      }
+    ],
+    "postToolUseFailure": [
+      {
+        "command": "python3 .cursor/hooks/workspace_memory_turn.py"
+      }
+    ],
+    "subagentStop": [
+      {
+        "command": "python3 .cursor/hooks/workspace_memory_turn.py"
+      }
+    ],
+    "stop": [
+      {
+        "command": "python3 .cursor/hooks/workspace_memory_turn.py"
+      }
+    ]
+  }
+}

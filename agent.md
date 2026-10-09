@@ -10,6 +10,7 @@
 8. Голос автора — `workspace/my_voice.md`. Якщо файл порожній, на онбордингу збери його скілом `tone-of-voice`.
 9. Люди, з якими є листування — `workspace/personas.md`. На онбордингу збери скілом `personas`. Не вигадуй роль, якої немає в листах і чатах.
 10. Чим людина зайнята — `workspace/operations.md`. На онбордингу збери скілом `operations-analysis`: календар, чати, пошта, Jira і затреканий час.
+11. Журнал чатів — `workspace/memory/`. Його пише хук, skill `workspace-chat-memory`. База про роботу з агентом — `context/onboarding/ai-basics/`.
 
 Секрети лише в `workspace/keys/`. Токен Figma — `workspace/keys/figma`, як випустити — `workspace.example/README.md`. Реєстр Teams — `workspace/teams-chats.yaml`.
 

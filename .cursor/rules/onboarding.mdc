@@ -12,7 +12,7 @@ alwaysApply: false
 Якщо питання про політики, процеси, комунікацію, відпустки:
 
 1. Skill `.cursor/skills/onboarding/SKILL.md`.
-2. Пошук у `context/onboarding/`.
+2. Пошук у `context/onboarding/`. База про агентів уже в `context/onboarding/ai-basics/`.
 3. Відповідь із посиланням на джерело. Немає локальної копії — не вигадувати норму.
 
 Перший сетап цього репозиторію — `workspace.example/README.md`, розділ «Що зробити далі»: Confluence, Figma, опис макетів, доки проєктів, продукти, tone of voice (`workspace/my_voice.md`), персони (`workspace/personas.md`) і реєстр операцій (`workspace/operations.md`). Не цей skill.
