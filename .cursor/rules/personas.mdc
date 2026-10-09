@@ -1,0 +1,12 @@
+---
+description: >-
+  Активація: персони, teammates, з ким листуюсь, хто в команді, /personas.
+  Люди з чатів і листів, без вигаданих ролей.
+alwaysApply: false
+---
+
+# Персони
+
+Запит зібрати команду або адресатів — skill `.cursor/skills/personas/SKILL.md`.
+
+Спочатку Gmail, Telegram і Teams. Імена пиши в `workspace/personas.md`. Роль і чим людина зайнята — лише з переписки. Не вигадуй.

@@ -2,7 +2,7 @@
 description: >-
   Загальні питання про компанію, політики, відпустки, «де це написано».
   Спочатку skill onboarding і context/onboarding. Сетап репозиторію:
-  Confluence, Figma, макети, доки продуктів, tone of voice —
+  Confluence, Figma, макети, доки продуктів, tone of voice, персони —
   workspace.example/README.md.
 alwaysApply: false
 ---
@@ -15,6 +15,6 @@ alwaysApply: false
 2. Пошук у `context/onboarding/`.
 3. Відповідь із посиланням на джерело. Немає локальної копії — не вигадувати норму.
 
-Перший сетап цього репозиторію — `workspace.example/README.md`, розділ «Що зробити далі»: Confluence, Figma, опис макетів, доки проєктів, продукти і tone of voice (`workspace/my_voice.md`). Не цей skill.
+Перший сетап цього репозиторію — `workspace.example/README.md`, розділ «Що зробити далі»: Confluence, Figma, опис макетів, доки проєктів, продукти, tone of voice (`workspace/my_voice.md`) і персони (`workspace/personas.md`). Не цей skill.
 
 Код продукту — не онбординг. Він лежить у `context/products/<product-name>/` як git submodule. Skill — `.cursor/skills/products/SKILL.md`.
