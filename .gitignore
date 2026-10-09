@@ -17,4 +17,9 @@ __pycache__/
 *.py[cod]
 .DS_Store
 .cursor/hooks/state/
+.tmp/
+.build/
+.codex-build/
+scratch/
+tmp/
 *.log

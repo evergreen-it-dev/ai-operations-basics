@@ -2,7 +2,9 @@
 
 Каркас того, як агент у Cursor веде операційну роботу: правила, skills, локальні ключі, скрипти каналів.
 
-Це зріз для показу. Репозиторій приватний: `evergreen-it-dev/ai-operations-basics`.
+Це зріз для показу. Репозиторій: `evergreen-it-dev/ai-operations-basics`.
+
+Codex і Claude не складають чорновики в корінь. Разове — `tasks/<task-name>/`, дампи — `output/`, ключі й журнал — `workspace/`. Не `.tmp` і не `.build`. Коротко це ще в `AGENTS.md`.
 
 ## Як це зібрано
 

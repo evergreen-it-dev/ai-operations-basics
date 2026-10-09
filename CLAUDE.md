@@ -10,12 +10,15 @@
 
 `workspace/` і `tasks/` локальні, не в git.
 
+Чорновики Codex і Claude не класти в корінь. Не створювати `.tmp`, `.build`, `.codex-build`, `scratch`, `tmp`. Разова задача — `tasks/<task-name>/` з `task.md`. Дампи каналів — `output/`. Ключі й журнал — `workspace/`. Те саме в `AGENTS.md`.
+
 <!-- BEGIN GENERATED: rules-index (tools/agents/sync_agent_bridge.py) -->
 
 ### Завжди застосовувати (`alwaysApply: true`)
 
 Прочитай ці файли на початку сесії — вони задають мову, контекст і поведінку:
 
+- **[`agent-data`](.cursor/rules/agent-data.mdc)** — Де Claude, Codex і Cursor кладуть дані. Не створювати .tmp, .build, .codex-build і інші чорнові теки в корені.
 - **[`general-writing`](.cursor/rules/general-writing.mdc)** — Загальні правила письма агента: без слопу, головне зверху, без інлайн-коду посеред речення. Перед чернеткою читай context/company/personas.md, за наявності workspace/personas.md, і workspace/my_voice.md. Чернетка людині назовні — через субагента writing-editor (спочатку знахідки слопу, потім правка).
 - **[`one-off-tasks`](.cursor/rules/one-off-tasks.mdc)** — Разова задача ні до чого конкретного: tasks/<task-name>/ з task.md і всіма файлами цієї задачі. Тека не в git.
 - **[`reply-language`](.cursor/rules/reply-language.mdc)** — Мова відповідей береться з workspace/user.md (поле Language). Нові документи — тією ж мовою, що й аудиторія тексту. Іншу мову — лише за явним запитом.
