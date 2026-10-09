@@ -1,0 +1,16 @@
+---
+description: >-
+  Активація: Telegram, непрочитані, особисті чати, /telegram.
+  Лише локальний MCP у tools/telegram-mcp. Папки-виключення — workspace/telegram-access.yaml.
+alwaysApply: false
+---
+
+# Telegram
+
+Читання особистого Telegram — skill `.cursor/skills/telegram-mcp/SKILL.md`.
+
+Перед викликом переконатися, що процес MCP запущений. Запис у чати — лише з явного запиту і opt-in у конфігу.
+
+Вихідні в непрочитаному (`fromMe: true`) не показувати. Папки зі списку виключень не обходити, доки користувач прямо не попросить конкретну папку.
+
+Огляд кількох чатів зберігається в `output/telegram/`.

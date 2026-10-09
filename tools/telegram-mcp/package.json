@@ -1,0 +1,52 @@
+{
+  "name": "mcp-telegram",
+  "version": "0.1.0",
+  "module": "src/index.ts",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "auth": "bun run src/auth.ts",
+    "dev": "bun run src/index.ts",
+    "start": "bun run src/index.ts",
+    "dev:mock": "TELEGRAM_MOCK=true bun run src/index.ts",
+    "test": "bun test --preload ./src/test-preload.ts",
+    "check": "bun run lint && bun run typecheck",
+    "typecheck": "tsc --noEmit",
+    "lint": "biome check .",
+    "lint:fix": "biome check --write .",
+    "check:structure": "bun run scripts/check-structure.ts",
+    "knip": "knip",
+    "audit": "bun run scripts/audit.ts",
+    "docker:build": "docker build -t telegram-mcp .",
+    "docker:run": "docker compose up"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "^2.4.2",
+    "@types/bun": "latest",
+    "@types/qrcode-terminal": "^0.12.2",
+    "knip": "^6.0.2"
+  },
+  "peerDependencies": {
+    "typescript": "^5"
+  },
+  "knip": {
+    "entry": [
+      "src/index.ts",
+      "src/auth.ts",
+      "scripts/*.ts"
+    ],
+    "project": [
+      "src/**/*.ts",
+      "scripts/**/*.ts"
+    ]
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.26.0",
+    "@mtcute/bun": "^0.28.0",
+    "@mtcute/dispatcher": "^0.28.0",
+    "pino": "^10.3.1",
+    "qrcode-terminal": "^0.12.0",
+    "yaml": "^2.8.2",
+    "zod": "^4.3.6"
+  }
+}

@@ -1,0 +1,6 @@
+# On-prem Jira PAT
+# JIRA_URL — базовий хост без /browse
+
+JIRA_URL=https://jira.example.com
+JIRA_PERSONAL_TOKEN=
+CONFLUENCE_URL=https://jira.example.com/wiki

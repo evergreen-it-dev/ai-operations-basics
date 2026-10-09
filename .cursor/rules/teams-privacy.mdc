@@ -1,0 +1,23 @@
+---
+description: >-
+  Політика приватності Microsoft Teams: не читати особисті чати, не сканувати весь Teams.
+  Разом із teams-review і teams-chat-review.
+alwaysApply: false
+---
+
+# Teams — приватність
+
+Перед читанням Teams перевір `workspace/teams-access.yaml` (шаблон `workspace.example/teams-access.yaml`).
+
+Якщо файлу немає — не використовуй `list_chats` / `search_messages`. Читай лише чати з `workspace/teams-chats.yaml`, крім групи `p0_1on1`.
+
+| Інструмент | Чому заборонений без явного дозволу |
+|---|---|
+| `list_chats` | показує всі чати, включно з особистими |
+| `search_messages` | пошук по всьому Teams |
+
+Дозволено `get_chat_messages` лише для chatId з реєстру, які не в `exclude_groups`.
+
+Особисті 1:1 — `workspace/teams-chats-personal.yaml`, файл не в git.
+
+Якщо chatId невідомий — запитай. Не шукай через `list_chats`.

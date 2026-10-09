@@ -1,0 +1,488 @@
+import { promises as fs } from "node:fs";
+import { beforeEach, describe, expect, it, vi } from "vitest";
+import {
+  buildFileAttachment,
+  detectMimeType,
+  escapeHtml,
+  extractGuidFromETag,
+  type FileUploadResult,
+  formatFileSize,
+  uploadFileToChannel,
+  uploadFileToChat,
+} from "../file-upload.js";
+
+describe("detectMimeType", () => {
+  it("should detect common document types", () => {
+    expect(detectMimeType("report.pdf")).toBe("application/pdf");
+    expect(detectMimeType("doc.docx")).toBe(
+      "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+    );
+    expect(detectMimeType("sheet.xlsx")).toBe(
+      "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+    );
+    expect(detectMimeType("archive.zip")).toBe("application/zip");
+    expect(detectMimeType("data.csv")).toBe("text/csv");
+    expect(detectMimeType("config.json")).toBe("application/json");
+  });
+
+  it("should detect image types", () => {
+    expect(detectMimeType("photo.png")).toBe("image/png");
+    expect(detectMimeType("photo.jpg")).toBe("image/jpeg");
+    expect(detectMimeType("photo.jpeg")).toBe("image/jpeg");
+    expect(detectMimeType("animation.gif")).toBe("image/gif");
+  });
+
+  it("should handle case-insensitive extensions", () => {
+    expect(detectMimeType("FILE.PDF")).toBe("application/pdf");
+    expect(detectMimeType("IMAGE.PNG")).toBe("image/png");
+  });
+
+  it("should return octet-stream for unknown types", () => {
+    expect(detectMimeType("file.xyz")).toBe("application/octet-stream");
+    expect(detectMimeType("noext")).toBe("application/octet-stream");
+  });
+
+  it("should handle full paths", () => {
+    expect(detectMimeType("/home/user/docs/report.pdf")).toBe("application/pdf");
+    expect(detectMimeType("/tmp/data.csv")).toBe("text/csv");
+  });
+});
+
+describe("extractGuidFromETag", () => {
+  it("should extract GUID from standard eTag format", () => {
+    const eTag = '"{B5765B1F-4D42-4C53-91A2-D49A14B0C8C3},2"';
+    expect(extractGuidFromETag(eTag)).toBe("B5765B1F-4D42-4C53-91A2-D49A14B0C8C3");
+  });
+
+  it("should handle eTag with different version numbers", () => {
+    const eTag = '"{ABCDEF01-2345-6789-ABCD-EF0123456789},15"';
+    expect(extractGuidFromETag(eTag)).toBe("ABCDEF01-2345-6789-ABCD-EF0123456789");
+  });
+
+  it("should handle fallback for non-standard eTag", () => {
+    const result = extractGuidFromETag("some-random-string");
+    expect(result).toBeTruthy();
+  });
+
+  it("should split before stripping commas in fallback path", () => {
+    // Without braces, should split on comma first, then strip quotes
+    const eTag = '"some-guid,3"';
+    expect(extractGuidFromETag(eTag)).toBe("some-guid");
+  });
+});
+
+describe("buildFileAttachment", () => {
+  it("should build correct reference attachment structure", () => {
+    const uploadResult: FileUploadResult = {
+      webUrl: "https://sharepoint.com/file.pdf",
+      attachmentId: "B5765B1F-4D42-4C53-91A2-D49A14B0C8C3",
+      fileName: "report.pdf",
+      fileSize: 1024,
+      mimeType: "application/pdf",
+    };
+
+    const attachments = buildFileAttachment(uploadResult);
+
+    expect(attachments).toEqual([
+      {
+        id: "B5765B1F-4D42-4C53-91A2-D49A14B0C8C3",
+        contentType: "reference",
+        contentUrl: "https://sharepoint.com/file.pdf",
+        name: "report.pdf",
+      },
+    ]);
+  });
+
+  it("should return an array with exactly one attachment", () => {
+    const uploadResult: FileUploadResult = {
+      webUrl: "https://example.com/file.docx",
+      attachmentId: "test-guid",
+      fileName: "document.docx",
+      fileSize: 2048,
+      mimeType: "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+    };
+
+    const attachments = buildFileAttachment(uploadResult);
+    expect(attachments).toHaveLength(1);
+    expect(attachments[0].contentType).toBe("reference");
+  });
+});
+
+describe("escapeHtml", () => {
+  it("should escape ampersands", () => {
+    expect(escapeHtml("a & b")).toBe("a &amp; b");
+  });
+
+  it("should escape angle brackets", () => {
+    expect(escapeHtml("<div>hello</div>")).toBe("&lt;div&gt;hello&lt;/div&gt;");
+  });
+
+  it("should escape quotes", () => {
+    expect(escapeHtml('She said "hello"')).toBe("She said &quot;hello&quot;");
+    expect(escapeHtml("It's fine")).toBe("It&#39;s fine");
+  });
+
+  it("should escape all special characters together", () => {
+    expect(escapeHtml(`<a href="test">&'`)).toBe("&lt;a href=&quot;test&quot;&gt;&amp;&#39;");
+  });
+
+  it("should return plain text unchanged", () => {
+    expect(escapeHtml("Hello world")).toBe("Hello world");
+  });
+
+  it("should handle empty string", () => {
+    expect(escapeHtml("")).toBe("");
+  });
+});
+
+describe("formatFileSize", () => {
+  it("should format bytes", () => {
+    expect(formatFileSize(500)).toBe("500 B");
+    expect(formatFileSize(0)).toBe("0 B");
+  });
+
+  it("should format kilobytes", () => {
+    expect(formatFileSize(1536)).toBe("1.5 KB");
+    expect(formatFileSize(1024)).toBe("1.0 KB");
+  });
+
+  it("should format megabytes", () => {
+    expect(formatFileSize(5 * 1024 * 1024)).toBe("5.0 MB");
+  });
+
+  it("should format gigabytes", () => {
+    expect(formatFileSize(2 * 1024 * 1024 * 1024)).toBe("2.0 GB");
+  });
+});
+
+describe("uploadFileToChannel", () => {
+  let mockClient: any;
+  let mockGraphService: any;
+
+  beforeEach(() => {
+    vi.mocked(fs.readFile).mockResolvedValue(Buffer.from("test-file-content"));
+
+    mockClient = {
+      api: vi.fn().mockImplementation((path: string) => {
+        if (path.includes("/filesFolder")) {
+          return {
+            get: vi.fn().mockResolvedValue({
+              id: "channel-folder-id",
+              parentReference: { driveId: "drive-123" },
+            }),
+          };
+        }
+        if (path.includes("/content")) {
+          return {
+            header: vi.fn().mockReturnValue({
+              put: vi.fn().mockResolvedValue({
+                webUrl: "https://sharepoint.com/uploaded-file.pdf",
+                eTag: '"{AAAA-BBBB-CCCC},1"',
+              }),
+            }),
+          };
+        }
+        return { get: vi.fn(), post: vi.fn() };
+      }),
+    };
+
+    mockGraphService = {
+      getClient: vi.fn().mockResolvedValue(mockClient),
+    };
+  });
+
+  it("should upload a file and return correct result", async () => {
+    const result = await uploadFileToChannel(
+      mockGraphService,
+      "team-1",
+      "channel-1",
+      "/tmp/report.pdf"
+    );
+
+    expect(result.webUrl).toBe("https://sharepoint.com/uploaded-file.pdf");
+    expect(result.attachmentId).toBe("AAAA-BBBB-CCCC");
+    expect(result.fileName).toBe("report.pdf");
+    expect(result.mimeType).toBe("application/pdf");
+  });
+
+  it("should use custom fileName when provided", async () => {
+    const result = await uploadFileToChannel(
+      mockGraphService,
+      "team-1",
+      "channel-1",
+      "/tmp/report.pdf",
+      "custom-name.pdf"
+    );
+
+    expect(result.fileName).toBe("custom-name.pdf");
+  });
+
+  it("should throw when filesFolder response is missing driveId", async () => {
+    mockClient.api.mockImplementation((path: string) => {
+      if (path.includes("/filesFolder")) {
+        return {
+          get: vi.fn().mockResolvedValue({
+            id: "folder-id",
+            parentReference: {},
+          }),
+        };
+      }
+      return { get: vi.fn() };
+    });
+
+    await expect(
+      uploadFileToChannel(mockGraphService, "team-1", "channel-1", "/tmp/file.pdf")
+    ).rejects.toThrow("Failed to resolve channel drive/folder IDs");
+  });
+
+  it("should throw when filesFolder response is missing folder id", async () => {
+    mockClient.api.mockImplementation((path: string) => {
+      if (path.includes("/filesFolder")) {
+        return {
+          get: vi.fn().mockResolvedValue({
+            parentReference: { driveId: "drive-123" },
+          }),
+        };
+      }
+      return { get: vi.fn() };
+    });
+
+    await expect(
+      uploadFileToChannel(mockGraphService, "team-1", "channel-1", "/tmp/file.pdf")
+    ).rejects.toThrow("Failed to resolve channel drive/folder IDs");
+  });
+
+  it("should use channel folder ID in upload API path", async () => {
+    await uploadFileToChannel(mockGraphService, "team-1", "channel-1", "/tmp/file.pdf");
+
+    const apiCalls = mockClient.api.mock.calls.map((c: any[]) => c[0]);
+    const uploadCall = apiCalls.find((p: string) => p.includes("/content"));
+    expect(uploadCall).toContain("/items/channel-folder-id:");
+  });
+
+  it("should throw when upload response is missing webUrl", async () => {
+    mockClient.api.mockImplementation((path: string) => {
+      if (path.includes("/filesFolder")) {
+        return {
+          get: vi.fn().mockResolvedValue({
+            id: "channel-folder-id",
+            parentReference: { driveId: "drive-123" },
+          }),
+        };
+      }
+      if (path.includes("/content")) {
+        return {
+          header: vi.fn().mockReturnValue({
+            put: vi.fn().mockResolvedValue({ eTag: '"{GUID},1"' }),
+          }),
+        };
+      }
+      return { get: vi.fn() };
+    });
+
+    await expect(
+      uploadFileToChannel(mockGraphService, "team-1", "channel-1", "/tmp/file.pdf")
+    ).rejects.toThrow("Upload failed: response did not contain webUrl/eTag");
+  });
+});
+
+describe("uploadFileToChat", () => {
+  let mockClient: any;
+  let mockGraphService: any;
+
+  beforeEach(() => {
+    vi.mocked(fs.readFile).mockResolvedValue(Buffer.from("test-file-content"));
+
+    mockClient = {
+      api: vi.fn().mockImplementation((path: string) => {
+        if (path === "/me/drive") {
+          return {
+            get: vi.fn().mockResolvedValue({ id: "user-drive-id" }),
+          };
+        }
+        if (path.includes("/content")) {
+          return {
+            header: vi.fn().mockReturnValue({
+              put: vi.fn().mockResolvedValue({
+                id: "uploaded-item-id",
+                webUrl: "https://onedrive.com/chat-file.docx",
+                eTag: '"{DDDD-EEEE-FFFF},1"',
+              }),
+            }),
+          };
+        }
+        if (path.includes("/createLink")) {
+          return {
+            post: vi.fn().mockResolvedValue({
+              link: { webUrl: "https://share.onedrive.com/org-link" },
+            }),
+          };
+        }
+        return { get: vi.fn(), post: vi.fn() };
+      }),
+    };
+
+    mockGraphService = {
+      getClient: vi.fn().mockResolvedValue(mockClient),
+    };
+  });
+
+  it("should upload a file to chat and return correct result", async () => {
+    const result = await uploadFileToChat(mockGraphService, "/tmp/document.docx");
+
+    expect(result.webUrl).toBe("https://share.onedrive.com/org-link");
+    expect(result.attachmentId).toBe("DDDD-EEEE-FFFF");
+    expect(result.fileName).toBe("document.docx");
+    expect(result.mimeType).toBe(
+      "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+    );
+  });
+
+  it("should use custom fileName when provided", async () => {
+    const result = await uploadFileToChat(mockGraphService, "/tmp/document.docx", "renamed.docx");
+
+    expect(result.fileName).toBe("renamed.docx");
+  });
+
+  it("should use 'root' as parentItemId in upload path", async () => {
+    await uploadFileToChat(mockGraphService, "/tmp/file.txt");
+
+    const apiCalls = mockClient.api.mock.calls.map((c: any[]) => c[0]);
+    const uploadCall = apiCalls.find((p: string) => p.includes("/content"));
+    expect(uploadCall).toContain("/items/root:");
+  });
+
+  it("should include 'Microsoft Teams Chat Files' in upload path", async () => {
+    await uploadFileToChat(mockGraphService, "/tmp/file.txt");
+
+    const apiCalls = mockClient.api.mock.calls.map((c: any[]) => c[0]);
+    const uploadCall = apiCalls.find((p: string) => p.includes("/content"));
+    expect(uploadCall).toContain(encodeURIComponent("Microsoft Teams Chat Files"));
+  });
+
+  it("should throw when drive response is missing id", async () => {
+    mockClient.api.mockImplementation((path: string) => {
+      if (path === "/me/drive") {
+        return {
+          get: vi.fn().mockResolvedValue({}),
+        };
+      }
+      return { get: vi.fn() };
+    });
+
+    await expect(uploadFileToChat(mockGraphService, "/tmp/file.pdf")).rejects.toThrow(
+      "Failed to resolve user drive ID"
+    );
+  });
+
+  it("should create organization sharing link and use its URL", async () => {
+    const result = await uploadFileToChat(mockGraphService, "/tmp/file.txt");
+
+    expect(result.webUrl).toBe("https://share.onedrive.com/org-link");
+
+    const apiCalls = mockClient.api.mock.calls.map((c: any[]) => c[0]);
+    const createLinkCall = apiCalls.find((p: string) => p.includes("/createLink"));
+    expect(createLinkCall).toBe("/drives/user-drive-id/items/uploaded-item-id/createLink");
+  });
+
+  it("should fall back to 'users' scope when organization scope fails", async () => {
+    let createLinkCallCount = 0;
+    mockClient.api.mockImplementation((path: string) => {
+      if (path === "/me/drive") {
+        return {
+          get: vi.fn().mockResolvedValue({ id: "user-drive-id" }),
+        };
+      }
+      if (path.includes("/content")) {
+        return {
+          header: vi.fn().mockReturnValue({
+            put: vi.fn().mockResolvedValue({
+              id: "uploaded-item-id",
+              webUrl: "https://onedrive.com/direct-url",
+              eTag: '"{DDDD-EEEE-FFFF},1"',
+            }),
+          }),
+        };
+      }
+      if (path.includes("/createLink")) {
+        createLinkCallCount++;
+        if (createLinkCallCount === 1) {
+          return {
+            post: vi.fn().mockRejectedValue(new Error("Organization scope disabled by policy")),
+          };
+        }
+        return {
+          post: vi.fn().mockResolvedValue({
+            link: { webUrl: "https://share.onedrive.com/users-link" },
+          }),
+        };
+      }
+      return { get: vi.fn(), post: vi.fn() };
+    });
+
+    const result = await uploadFileToChat(mockGraphService, "/tmp/file.txt");
+
+    expect(result.webUrl).toBe("https://share.onedrive.com/users-link");
+    expect(createLinkCallCount).toBe(2);
+  });
+
+  it("should fall back to direct webUrl when both sharing scopes fail", async () => {
+    mockClient.api.mockImplementation((path: string) => {
+      if (path === "/me/drive") {
+        return {
+          get: vi.fn().mockResolvedValue({ id: "user-drive-id" }),
+        };
+      }
+      if (path.includes("/content")) {
+        return {
+          header: vi.fn().mockReturnValue({
+            put: vi.fn().mockResolvedValue({
+              id: "uploaded-item-id",
+              webUrl: "https://onedrive.com/direct-url",
+              eTag: '"{DDDD-EEEE-FFFF},1"',
+            }),
+          }),
+        };
+      }
+      if (path.includes("/createLink")) {
+        return {
+          post: vi.fn().mockRejectedValue(new Error("Sharing links disabled")),
+        };
+      }
+      return { get: vi.fn(), post: vi.fn() };
+    });
+
+    const result = await uploadFileToChat(mockGraphService, "/tmp/file.txt");
+
+    expect(result.webUrl).toBe("https://onedrive.com/direct-url");
+  });
+
+  it("should fall back to direct webUrl when upload result has no id", async () => {
+    mockClient.api.mockImplementation((path: string) => {
+      if (path === "/me/drive") {
+        return {
+          get: vi.fn().mockResolvedValue({ id: "user-drive-id" }),
+        };
+      }
+      if (path.includes("/content")) {
+        return {
+          header: vi.fn().mockReturnValue({
+            put: vi.fn().mockResolvedValue({
+              webUrl: "https://onedrive.com/no-id-file.txt",
+              eTag: '"{AAAA-BBBB-CCCC},1"',
+            }),
+          }),
+        };
+      }
+      return { get: vi.fn(), post: vi.fn() };
+    });
+
+    const result = await uploadFileToChat(mockGraphService, "/tmp/file.txt");
+
+    expect(result.webUrl).toBe("https://onedrive.com/no-id-file.txt");
+    // Verify createLink was never called (no id means no sharing link attempt)
+    const apiCalls = mockClient.api.mock.calls.map((c: any[]) => c[0]);
+    const createLinkCalls = apiCalls.filter((p: string) => p.includes("/createLink"));
+    expect(createLinkCalls).toHaveLength(0);
+  });
+});

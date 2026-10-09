@@ -1,0 +1,4 @@
+# Один рядок: API token вікі.
+# База: змінна оточення FOLIO_BASE_URL (див. skill folio).
+
+REPLACE_WITH_YOUR_TOKEN

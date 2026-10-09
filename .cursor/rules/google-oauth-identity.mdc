@@ -1,0 +1,25 @@
+---
+description: >-
+  Перед Gmail і Drive перевірити, що OAuth-токен належить email з workspace/user.md.
+  Якщо інший акаунт — стоп і явне підтвердження.
+alwaysApply: false
+---
+
+# Google OAuth — особа
+
+Перед Gmail або Drive:
+
+```bash
+cd tools/google
+python check_oauth_identity.py --gmail-readonly
+```
+
+Очікуваний email — основний робочий Google з `workspace/user.md`.
+
+| Результат | Дія |
+|---|---|
+| OK, email збігається | продовжуй |
+| MISMATCH | запис у Drive і відправка пошти — стоп, запитай. Читання пошти — можна, якщо користувач це й просив зі свого боку |
+| немає токена | стоп, `oauth_login.py` |
+
+Токен лежить у `workspace/keys/`, не в git.

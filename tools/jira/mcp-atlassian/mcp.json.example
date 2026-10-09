@@ -1,0 +1,14 @@
+{
+  "mcpServers": {
+    "mcp-atlassian-on-prem": {
+      "command": "/opt/homebrew/bin/uvx",
+      "args": ["mcp-atlassian"],
+      "env": {
+        "JIRA_URL": "https://jira.example.com",
+        "JIRA_PERSONAL_TOKEN": "<PAT from workspace/keys/jira-onprem>",
+        "CONFLUENCE_URL": "https://jira.example.com/wiki",
+        "CONFLUENCE_PERSONAL_TOKEN": "<same PAT if not set separately>"
+      }
+    }
+  }
+}

@@ -1,0 +1,10 @@
+---
+description: >-
+  Активація: Mermaid, flowchart, блок-схема, діаграма процесу, graph у Markdown.
+  Перед блоком mermaid — skill mermaid-flowcharts.
+alwaysApply: false
+---
+
+# Mermaid
+
+Усі flowchart у Markdown — skill `.cursor/skills/mermaid-flowcharts/SKILL.md`. Повна специфікація — `mermaid-tool-v2.md` поруч зі skill.

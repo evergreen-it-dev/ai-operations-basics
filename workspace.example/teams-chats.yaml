@@ -1,0 +1,25 @@
+# Реєстр робочих чатів Teams. Локальна копія: workspace/teams-chats.yaml
+# id — chatId з Teams. Порожній id означає «ще не заведено».
+
+meta:
+  updated: "YYYY-MM-DD"
+  account: you@company.example
+
+chats:
+  leadership:
+    id: ""
+    name: "Leadership"
+    group: p0_group
+    aliases: [leadership, leads]
+
+  team-daily:
+    id: ""
+    name: "Team daily"
+    group: p1_standup
+    aliases: [daily, standup]
+
+  ops-example:
+    id: ""
+    name: "Operations example"
+    group: p2_ops
+    aliases: [ops, operations]

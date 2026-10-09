@@ -1,0 +1,19 @@
+---
+description: >-
+  Активація: Teams, непрочитані, нові чати, /teams, teams review.
+  Питання про Microsoft Teams — skill teams-chat-review.
+alwaysApply: false
+---
+
+# Microsoft Teams
+
+Запит про Teams — одразу skill `.cursor/skills/teams-chat-review/SKILL.md`.
+
+Перед доступом — rule teams-privacy і `workspace/teams-access.yaml`.
+
+Не питати підтвердження на огляд непрочитаних:
+
+1. `node tools/teams/dump_review.js`
+2. Прочитати свіжий `output/teams/teams_review_*.md` і відповісти в чат
+
+Імена людей брати з `context/company/people.md`, якщо файл є. Не вигадувати скорочення.

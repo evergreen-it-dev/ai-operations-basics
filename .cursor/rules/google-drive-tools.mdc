@@ -1,0 +1,14 @@
+---
+description: >-
+  Активація: Google Drive, папка на диску, drive_tool.
+  Спільний OAuth з Gmail, skill google-drive-tools.
+alwaysApply: false
+---
+
+# Google Drive
+
+Перед операцією — rule google-oauth-identity.
+
+Дії з диском — skill `.cursor/skills/google-drive-tools/SKILL.md`.
+
+Запис, шаринг і переміщення — після явного підтвердження.

@@ -1,0 +1,18 @@
+# user.md
+
+Локальний файл, не в git. Заповни плейсхолдери.
+
+- **Name:** [ім’я]
+- **What to call them:** [як звертатися]
+- **Role:** [роль, компанія]
+- **Language:** uk
+- **Timezone:** Europe/Kyiv
+
+## Accounts
+
+- **[email@company.example]** — основний робочий Google (Gmail, Drive).
+
+## Company
+
+- Коротко, чим займається компанія.
+- Деталі продукту й команди — `context/company/`.

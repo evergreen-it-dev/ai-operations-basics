@@ -1,0 +1,14 @@
+---
+description: >-
+  Активація: Gmail, вхідні, непрочитані, /gmail-fetch.
+  Команди з tools/google, skill gmail-tools. Ключі API не вигадувати.
+alwaysApply: false
+---
+
+# Gmail
+
+Перед операцією — rule google-oauth-identity.
+
+Дії з поштою — skill `.cursor/skills/gmail-tools/SKILL.md`.
+
+Slash-команда `/gmail-fetch` веде в той самий skill.

@@ -1,0 +1,8 @@
+# cp workspace.example/keys/google.example workspace/keys/google
+# Шляхи відносні до workspace/keys/, якщо не абсолютні.
+
+project_id=your-gcp-project
+oauth_client_secret=client_secret.json
+oauth_token=google_oauth_token.json
+# service_account=service-account.json
+# impersonate_user=user@company.example

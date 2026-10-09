@@ -1,0 +1,9 @@
+# cp workspace.example/telegram-access.yaml workspace/telegram-access.yaml
+# Папки, які огляд непрочитаного пропускає, доки користувач прямо не попросить одну з них.
+# Дайджест-боти зводяться в одне саммарі.
+
+exclude_folder_titles: []
+
+digest_chat_names: []
+
+digest_chat_ids: []

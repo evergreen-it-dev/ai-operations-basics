@@ -1,0 +1,56 @@
+name: Docker Publish
+
+on:
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: "Image tag (e.g. v1.2.3). Defaults to short SHA."
+        required: false
+        default: ""
+
+jobs:
+  docker:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v4
+
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v4
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Log in to GitHub Container Registry
+        uses: docker/login-action@v4
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Compute tags
+        id: tags
+        run: |
+          SHA=$(git rev-parse --short HEAD)
+          if [ -n "${{ github.event.inputs.tag }}" ]; then
+            echo "tags=docker.io/newink/telegram-mcp:${{ github.event.inputs.tag }},ghcr.io/newink/telegram-mcp:${{ github.event.inputs.tag }},docker.io/newink/telegram-mcp:sha-${SHA},ghcr.io/newink/telegram-mcp:sha-${SHA}" >> $GITHUB_OUTPUT
+          else
+            echo "tags=docker.io/newink/telegram-mcp:sha-${SHA},ghcr.io/newink/telegram-mcp:sha-${SHA}" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Build and push
+        uses: docker/build-push-action@v7
+        with:
+          context: .
+          platforms: linux/amd64,linux/arm64
+          push: true
+          tags: ${{ steps.tags.outputs.tags }}

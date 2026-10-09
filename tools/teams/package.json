@@ -1,0 +1,87 @@
+{
+  "name": "@floriscornel/teams-mcp",
+  "version": "1.0.0",
+  "description": "MCP server for Microsoft Graph Teams integration",
+  "type": "module",
+  "main": "dist/index.js",
+  "bin": {
+    "teams-mcp": "dist/index.js"
+  },
+  "files": [
+    "dist/**/*",
+    "README.md",
+    "package.json"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "build": "npm run clean && npm run compile",
+    "clean": "rm -rf dist",
+    "compile": "tsc",
+    "ci": "biome ci src/",
+    "dev": "tsx watch src/index.ts",
+    "auth": "node dist/index.js authenticate",
+    "auth:check": "node dist/index.js check",
+    "auth:logout": "node dist/index.js logout",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage",
+    "test:coverage:ci": "vitest run --coverage --reporter=default --reporter=junit --outputFile.junit=test-results.xml",
+    "test:ui": "vitest --ui",
+    "lint": "biome check src/",
+    "lint:fix": "biome check --write --unsafe src/",
+    "format": "biome format --write src/",
+    "bump": "npx npm-check-updates -i",
+    "prepublishOnly": "npm run build"
+  },
+  "keywords": [
+    "mcp",
+    "microsoft-graph",
+    "teams",
+    "model-context-protocol"
+  ],
+  "author": "Floris Cornel",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/floriscornel/teams-mcp.git"
+  },
+  "homepage": "https://github.com/floriscornel/teams-mcp#readme",
+  "bugs": {
+    "url": "https://github.com/floriscornel/teams-mcp/issues"
+  },
+  "dependencies": {
+    "@azure/identity": "^4.13.1",
+    "@azure/identity-cache-persistence": "^1.2.0",
+    "@microsoft/microsoft-graph-client": "^3.0.7",
+    "@microsoft/microsoft-graph-types": "^2.43.1",
+    "@modelcontextprotocol/sdk": "^1.28.0",
+    "@types/dompurify": "^3.2.0",
+    "@types/jsdom": "^28.0.1",
+    "@types/marked": "^6.0.0",
+    "dompurify": "^3.3.3",
+    "jsdom": "^29.0.1",
+    "marked": "^17.0.5",
+    "turndown": "^7.2.2",
+    "turndown-plugin-gfm": "^1.0.2",
+    "yaml": "^2.9.0",
+    "zod": "^4.3.6"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "2.4.9",
+    "@types/node": "^25.5.0",
+    "@types/sinon": "^21.0.0",
+    "@types/turndown": "^5.0.6",
+    "@vitest/coverage-v8": "^4.1.2",
+    "msw": "^2.12.14",
+    "nock": "^14.0.11",
+    "sinon": "^21.0.3",
+    "tsx": "^4.21.0",
+    "typescript": "^6.0.2",
+    "vitest": "^4.1.2"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

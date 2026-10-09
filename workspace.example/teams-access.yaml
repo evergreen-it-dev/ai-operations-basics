@@ -1,0 +1,16 @@
+# cp workspace.example/teams-access.yaml workspace/teams-access.yaml
+
+meta:
+  account: you@company.example
+  updated: "YYYY-MM-DD"
+
+policy:
+  mode: registry_only
+  exclude_groups:
+    - p0_1on1
+  forbid_mcp_tools:
+    - list_chats
+    - search_messages
+  mentions:
+    allow: true
+    allowlist_only: true
