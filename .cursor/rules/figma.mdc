@@ -1,0 +1,14 @@
+---
+description: >-
+  Активація: Figma, макет, компонент, варіант, дизайн екрана, context/design.
+  Спочатку локальний знімок. Далі лише Figma MCP або REST API. Браузер не відкривати.
+alwaysApply: false
+---
+
+# Figma
+
+Скіл `.cursor/skills/figma/SKILL.md`.
+
+Каталог макетів — `context/design/catalog.yaml`. Знімок одного макета — `context/design/<figma-name>/design.md`: екрани і компоненти з параметрами.
+
+Спочатку читати локальні файли. Далі лише Figma MCP або REST API (`workspace/keys/figma`). Браузер не відкривати.

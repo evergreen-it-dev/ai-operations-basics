@@ -6,6 +6,7 @@
 2. Skill — `.cursor/skills/<name>/SKILL.md`.
 3. Компанія — `context/company/`. Онбординг — `context/onboarding/`.
 4. Код і доки продукту — `context/products/<product-name>/`, git submodule (клон репозиторію). Skill — `.cursor/skills/products/SKILL.md`.
+5. Макети Figma — `context/design/`. Skill — `.cursor/skills/figma/SKILL.md`. Дизайн-система — `context/design/<slug>/DESIGN.md`, skill `.cursor/skills/design-md/SKILL.md`.
 
 `workspace/` і `tasks/` локальні, не в git.
 
@@ -18,7 +19,7 @@
 - **[`general-writing`](.cursor/rules/general-writing.mdc)** — Загальні правила письма агента: без слопу, головне зверху, без інлайн-коду посеред речення. Перед чернеткою читай context/company/personas.md, за наявності workspace/personas.md, і workspace/my_voice.md. Чернетка людині назовні — через субагента writing-editor (спочатку знахідки слопу, потім правка).
 - **[`one-off-tasks`](.cursor/rules/one-off-tasks.mdc)** — Разові задачі: тека tasks/<short-name> у корені репозиторію; не в git; підпапки data/scripts/output/docs/articles; попередити, що це тимчасове.
 - **[`reply-language`](.cursor/rules/reply-language.mdc)** — Мова відповідей береться з workspace/user.md (поле Language). Нові документи — тією ж мовою, що й аудиторія тексту. Іншу мову — лише за явним запитом.
-- **[`workspace-context`](.cursor/rules/workspace-context.mdc)** — Перед узагальненою відповіддю про користувача або компанію читай workspace/user.md і context/company/. Код продукту — context/products/<product-name>, git submodule. Не вигадуй імена, ролі й факти.
+- **[`workspace-context`](.cursor/rules/workspace-context.mdc)** — Перед узагальненою відповіддю про користувача або компанію читай workspace/user.md і context/company/. Код продукту — context/products/<product-name>, git submodule. Макети Figma — context/design, локальний знімок. Не вигадуй імена, ролі й факти.
 
 ### За темою (`alwaysApply: false`)
 
@@ -27,6 +28,8 @@
 | Rule | Коли читати |
 |------|-------------|
 | [`confluence-import`](.cursor/rules/confluence-import.mdc) | Активація: вигрузити Confluence, імпорт спейсу, коренева сторінка Confluence, confluence import, /confluence-import. REST-скрипт, не MCP. |
+| [`design-md`](.cursor/rules/design-md.mdc) | Активація: дизайн-система, DESIGN.md, designmd, токени UI. Формат designmd.ai. Файл context/design/<slug>/DESIGN.md. Не плутати зі знімком макета design.md. |
+| [`figma`](.cursor/rules/figma.mdc) | Активація: Figma, макет, компонент, варіант, дизайн екрана, context/design. Спочатку локальний знімок. Далі лише Figma MCP або REST API. Браузер не відкривати. |
 | [`folio`](.cursor/rules/folio.mdc) | Активація: Folio, внутрішня вікі, list_spaces, read_page, search_pages, /folio. URL з FOLIO_BASE_URL. Не плутати з Confluence-онбордингом у context/onboarding. |
 | [`gmail-tools`](.cursor/rules/gmail-tools.mdc) | Активація: Gmail, вхідні, непрочитані, /gmail-fetch. Команди з tools/google, skill gmail-tools. Ключі API не вигадувати. |
 | [`google-drive-tools`](.cursor/rules/google-drive-tools.mdc) | Активація: Google Drive, папка на диску, drive_tool. Спільний OAuth з Gmail, skill google-drive-tools. |

@@ -6,7 +6,7 @@
 
 ## Як це зібрано
 
-Агент читає `.cursor/rules/` завжди або за темою, і skill у `.cursor/skills/<name>/SKILL.md`, коли запит збігається з описом. Секрети й реєстри чатів живуть у `workspace/` (не в git). Шаблони — `workspace.example/`. Факти компанії — `context/company/`. Політики — `context/onboarding/`. Код і доки продукту — `context/products/<product-name>/`: це git submodule, окремий клон репозиторію продукту.
+Агент читає `.cursor/rules/` завжди або за темою, і skill у `.cursor/skills/<name>/SKILL.md`, коли запит збігається з описом. Секрети й реєстри чатів живуть у `workspace/` (не в git). Шаблони — `workspace.example/`. Факти компанії — `context/company/`. Політики — `context/onboarding/`. Код і доки продукту — `context/products/<product-name>/`: це git submodule, окремий клон репозиторію продукту. Макети Figma — `context/design/`: каталог у `catalog.yaml`, знімок макета в `<figma-name>/design.md`. Токен для API — personal access token у `workspace/keys/figma`, кроки в `workspace.example/README.md`.
 
 ## Що всередині
 
@@ -24,7 +24,7 @@
 | Задачі | `productivity-update` | `workspace/TASKS.md` |
 | Текст | `humor-writer`, субагент `writing-editor` | — |
 | Діаграми | `mermaid-flowcharts` | — |
-| Дизайн | `design-handoff`, `design-critique` | — |
+| Дизайн | `figma`, `design-md`, `design-handoff`, `design-critique` | `context/design/` |
 
 Мова чату береться з `workspace/user.md`, не зашита під одну людину.
 

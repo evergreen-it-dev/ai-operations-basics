@@ -9,5 +9,6 @@
 | `folio` | Токен вікі, один рядок |
 | `telegram` | api_id і api_hash |
 | `confluence` | PAT або email + API token для імпорту спейсу |
+| `figma` | Personal access token Figma, один рядок |
 
 Client secret JSON і oauth token поруч у `workspace/keys/`, не в репозиторії.

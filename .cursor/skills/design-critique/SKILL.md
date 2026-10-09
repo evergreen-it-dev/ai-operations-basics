@@ -16,7 +16,7 @@ Get structured design feedback across multiple dimensions.
 
 Review the design: @$1
 
-If a Figma URL is provided, pull the design from Figma. If a file is referenced, read it. Otherwise, ask the user to describe or share their design.
+If a Figma URL is provided, read `context/design/catalog.yaml` and `context/design/<figma-name>/design.md` first (skill `.cursor/skills/figma/SKILL.md`). Call Figma MCP only when the local snapshot does not cover the screen. If a file is referenced, read it. Otherwise, ask the user to describe or share their design.
 
 ## What I Need From You
 

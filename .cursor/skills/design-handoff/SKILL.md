@@ -16,7 +16,7 @@ Generate comprehensive developer handoff documentation from a design.
 
 Generate handoff specs for: @$1
 
-If a Figma URL is provided, pull the design from Figma. Otherwise, work from the provided description or screenshot.
+If a Figma URL is provided, read `context/design/catalog.yaml` and `context/design/<figma-name>/design.md` first (skill `.cursor/skills/figma/SKILL.md`). Call Figma MCP only to refresh that one mockup or a frame the snapshot does not cover. Otherwise, work from the provided description or screenshot.
 
 ## What to Include
 

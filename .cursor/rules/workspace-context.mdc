@@ -2,7 +2,7 @@
 description: >-
   Перед узагальненою відповіддю про користувача або компанію читай workspace/user.md
   і context/company/. Код продукту — context/products/<product-name>, git submodule.
-  Не вигадуй імена, ролі й факти.
+  Макети Figma — context/design, локальний знімок. Не вигадуй імена, ролі й факти.
 alwaysApply: true
 ---
 
@@ -11,5 +11,7 @@ alwaysApply: true
 1. `workspace/user.md` — роль, пріоритети, мова, як звертатися. Немає файлу — скопіюй `workspace.example/user.md.example` і попроси заповнити. Не вигадуй біографію.
 2. `context/company/` — факти: команда, процеси, що за продукт. Немає факту у файлі — так і скажи.
 3. `context/products/<product-name>/` — код і доки продукту. Це git submodule, окремий клон репозиторію. Деталі — skill `.cursor/skills/products/SKILL.md`.
+4. `context/design/` — макети Figma. Каталог — `catalog.yaml`. Один макет — `context/design/<figma-name>/design.md`. Спочатку локальний знімок, не повний MCP. Деталі — skill `.cursor/skills/figma/SKILL.md`.
+5. Дизайн-система — `context/design/<slug>/DESIGN.md` (формат DESIGN.md). Скіл `.cursor/skills/design-md/SKILL.md`. Це не знімок макета.
 
 `workspace/` локальний, у git не входить. Шаблони — `workspace.example/`.

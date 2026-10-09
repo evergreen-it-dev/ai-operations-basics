@@ -1,0 +1,15 @@
+---
+description: >-
+  Активація: дизайн-система, DESIGN.md, designmd, токени UI.
+  Формат designmd.ai. Файл context/design/<slug>/DESIGN.md.
+  Не плутати зі знімком макета design.md.
+alwaysApply: false
+---
+
+# DESIGN.md
+
+Скіл `.cursor/skills/design-md/SKILL.md`.
+
+Дизайн-система — `context/design/<slug>/DESIGN.md`. Секції: Colors, Typography, Spacing, Components, Elevation, Guidelines.
+
+Знімок екрана Figma — інший файл, `context/design/<figma-name>/design.md`.
