@@ -9,6 +9,8 @@ alwaysApply: false
 
 Запит про Teams — одразу skill `.cursor/skills/teams-chat-review/SKILL.md`.
 
+Доступ лише через API/MCP та локальні скрипти інтеграції. Не відкривай Teams у браузері. Якщо підключення немає — skill .cursor/skills/teams-connect/SKILL.md.
+
 Перед доступом — rule teams-privacy і `workspace/teams-access.yaml`.
 
 Не питати підтвердження на огляд непрочитаних:

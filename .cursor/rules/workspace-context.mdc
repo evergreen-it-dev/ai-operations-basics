@@ -8,7 +8,7 @@ alwaysApply: true
 
 # Контекст
 
-1. `workspace/user.md` — роль, пріоритети, мова, як звертатися. Немає файлу — скопіюй `workspace.example/user.md.example` і попроси заповнити. Не вигадуй біографію.
+1. `workspace/user.md` — роль, пріоритети, мова, як звертатися. Немає файлу — користуйся явними вказівками користувача. Для роботи з кодом і правилами профіль не потрібен. На запит налаштувати робочий простір скопіюй `workspace.example/user.md.example` і попроси заповнити. Не вигадуй біографію.
 2. `context/company/` — факти: команда, процеси, що за продукт. Немає факту у файлі — так і скажи.
 3. `context/products/<product-name>/` — код і доки продукту. Це git submodule, окремий клон репозиторію. Деталі — skill `.cursor/skills/products/SKILL.md`.
 4. `context/design/` — макети Figma. Каталог — `catalog.yaml`. Один макет — `context/design/<figma-name>/design.md`. Спочатку локальний знімок, не повний MCP. Деталі — skill `.cursor/skills/figma/SKILL.md`.

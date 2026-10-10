@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
-"""Міст .cursor → .claude: symlinks на skills/commands/agents + індекс rules у CLAUDE.md.
+"""Спільні інструкції .cursor для Codex, Claude Code і Cursor.
 
-Source of truth лишається в `.cursor/`. Claude Code бачить skills/commands/agents
-через symlinks, а rules (`*.mdc`, які Claude Code не читає сам) — через згенерований
-індекс у `CLAUDE.md` між маркерами.
+Джерело лишається в `.cursor/`. Codex бачить skills через `.agents/skills`,
+Claude Code — через `.claude/`. Індекс rules генерується в AGENTS.md і CLAUDE.md.
+Звичайні файли й теки на місці очікуваних symlinks не перезаписуються.
 
 Використання:
     python3 tools/agents/sync_agent_bridge.py           # застосувати зміни
@@ -18,7 +18,13 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
 
-LINKS = {"skills": "../.cursor/skills", "commands": "../.cursor/commands", "agents": "../.cursor/agents"}
+LINKS = {
+    ".agents/skills": "../.cursor/skills",
+    ".claude/skills": "../.cursor/skills",
+    ".claude/commands": "../.cursor/commands",
+    ".claude/agents": "../.cursor/agents",
+}
+INDEX_FILES = ("AGENTS.md", "CLAUDE.md")
 
 BEGIN = "<!-- BEGIN GENERATED: rules-index (tools/agents/sync_agent_bridge.py) -->"
 END = "<!-- END GENERATED: rules-index -->"
@@ -55,18 +61,22 @@ def parse_frontmatter(path: Path) -> dict[str, str]:
 
 def ensure_links(check: bool) -> list[str]:
     problems: list[str] = []
-    claude = ROOT / ".claude"
-    if not check:
-        claude.mkdir(exist_ok=True)
     for name, target in LINKS.items():
-        link = claude / name
+        link = ROOT / name
+        if not (link.parent / target).resolve().is_dir():
+            problems.append(f"{name}: тека-джерело {target} відсутня")
+            continue
+        if link.exists() and not link.is_symlink():
+            problems.append(f"{name}: звичайний файл або тека; збережено без змін")
+            continue
         current = link.readlink().as_posix() if link.is_symlink() else None
         if current == target:
             continue
         if check:
-            problems.append(f"symlink .claude/{name} → {target} відсутній або хибний (зараз: {current})")
+            problems.append(f"symlink {name} → {target} відсутній або хибний (зараз: {current})")
             continue
-        if link.is_symlink() or link.exists():
+        link.parent.mkdir(exist_ok=True)
+        if link.is_symlink():
             link.unlink()
         link.symlink_to(target)
     return problems
@@ -108,13 +118,13 @@ def render_index() -> str:
     return "\n".join(lines)
 
 
-def sync_claude_md(check: bool) -> list[str]:
-    path = ROOT / "CLAUDE.md"
+def sync_index(filename: str, check: bool) -> list[str]:
+    path = ROOT / filename
     if not path.is_file():
         return [f"{path.name} відсутній — створи його з маркерами {BEGIN}"]
     text = path.read_text(encoding="utf-8")
-    if BEGIN not in text or END not in text:
-        return [f"{path.name}: немає маркерів {BEGIN} … {END}"]
+    if text.count(BEGIN) != 1 or text.count(END) != 1 or text.index(BEGIN) > text.index(END):
+        return [f"{path.name}: потрібна одна пара маркерів {BEGIN} … {END}"]
     updated = re.sub(
         re.escape(BEGIN) + r".*?" + re.escape(END),
         lambda _: render_index(),
@@ -130,9 +140,12 @@ def sync_claude_md(check: bool) -> list[str]:
 
 
 def validate_skills() -> list[str]:
-    """Claude Code вимагає name == ім'я теки і kebab-case."""
+    """Перевірити спільний формат skills: name, description і kebab-case."""
     problems: list[str] = []
-    for directory in sorted((ROOT / ".cursor" / "skills").iterdir()):
+    skills = ROOT / ".cursor" / "skills"
+    if not skills.is_dir():
+        return [".cursor/skills: тека-джерело відсутня"]
+    for directory in sorted(skills.iterdir()):
         if not directory.is_dir():
             continue
         skill = directory / "SKILL.md"
@@ -157,7 +170,13 @@ def main() -> int:
     parser.add_argument("--check", action="store_true", help="лише перевірити, нічого не писати")
     args = parser.parse_args()
 
-    problems = ensure_links(args.check) + sync_claude_md(args.check) + validate_skills()
+    problems = validate_skills()
+    if not (ROOT / ".cursor" / "rules").is_dir():
+        problems.append(".cursor/rules: тека-джерело відсутня")
+    if not problems:
+        problems.extend(ensure_links(args.check))
+        for filename in INDEX_FILES:
+            problems.extend(sync_index(filename, args.check))
     if problems:
         for item in problems:
             print(f"✗ {item}", file=sys.stderr)
@@ -169,8 +188,9 @@ def main() -> int:
     agents = len(list((ROOT / ".cursor" / "agents").glob("*.md")))
     verb = "перевірено" if args.check else "синхронізовано"
     print(
-        f"✓ {verb}: {skills} skills, {commands} commands, {agents} agents (symlinks); "
-        f"rules {len(always)} always-on + {len(on_demand)} за темою → CLAUDE.md"
+        f"✓ {verb}: {skills} skills → .agents/skills і .claude/skills; "
+        f"{commands} commands, {agents} agents → .claude/; "
+        f"rules {len(always)} always-on + {len(on_demand)} за темою → AGENTS.md і CLAUDE.md"
     )
     return 0
 

@@ -1,14 +1,37 @@
 # Operations approach
 
-Каркас того, як агент у Cursor веде операційну роботу: правила, skills, локальні ключі, скрипти каналів.
+Каркас операційної роботи для Codex, Claude Code і Cursor: спільні правила, навички, локальні ключі та скрипти каналів.
 
 Це зріз для показу. Репозиторій: `evergreen-it-dev/ai-operations-basics`.
 
-Codex і Claude не складають чорновики в корінь. Разове — `tasks/<task-name>/`, дампи — `output/`, ключі й журнал — `workspace/`. Не `.tmp` і не `.build`. Коротко це ще в `AGENTS.md`.
+Початок роботи для агента — [AGENTS.md](AGENTS.md). Разові результати — tasks/&lt;task-name&gt;/, дампи — output/, ключі й журнал — workspace/. Чорновики не складати в корінь, .tmp чи .build.
+
+## Спільні правила для Codex, Claude Code і Cursor
+
+Назва .cursor історична: правила й навички в ній спільні для всіх агентів цього репозиторію. Оригінали залишаються в одному місці, а агенти отримують до них доступ через свої точки входу.
+
+| Агент | Правила | Навички |
+|---|---|---|
+| Codex | AGENTS.md з індексом .cursor/rules/ | .agents/skills → ../.cursor/skills |
+| Claude Code | CLAUDE.md з посиланням на AGENTS.md та індексом правил | .claude/skills → ../.cursor/skills |
+| Cursor | .cursor/rules/, починаючи з 00_project-orientation.mdc | .cursor/skills/ |
+
+Codex використовує AGENTS.md для інструкцій проєкту й виявляє локальні навички в .agents/skills, зокрема через символічні посилання. Джерела: [інструкції AGENTS.md](https://learn.chatgpt.com/docs/agent-configuration/agents-md), [локальні навички Codex](https://learn.chatgpt.com/docs/build-skills#where-codex-loads-local-skills).
+
+Теку .cursor цілком не перейменовуємо: в ній є також налаштування Cursor — hooks.json, hooks/ і команди. .agents/skills дає Codex доступ до спільних навичок без дублювання файлів і зміни наявних посилань. Міст не переносить конфігурацію MCP чи хуків між агентами.
+
+Після клонування або зміни правил перевір підключення:
+
+```bash
+make agent-bridge
+make agent-bridge-check
+```
+
+Скрипт створює символічні посилання й оновлює індекси правил у AGENTS.md та CLAUDE.md. Звичайні файли й теки на місці посилань він не перезаписує. Перевірка з --check нічого не змінює. Для клону без підтримки symlinks агент може читати SKILL.md напряму з .cursor/skills/; для автоматичного виявлення навичок потрібні робочі символічні посилання.
 
 ## Як це зібрано
 
-Агент читає `.cursor/rules/` завжди або за темою, і skill у `.cursor/skills/<name>/SKILL.md`, коли запит збігається з описом. Секрети й реєстри чатів живуть у `workspace/` (не в git). Шаблони — `workspace.example/`. Факти компанії — `context/company/`. Політики — `context/onboarding/`. Код і доки продукту — `context/products/<product-name>/`: це git submodule, окремий клон репозиторію продукту. Макети Figma — `context/design/`: каталог у `catalog.yaml`, знімок макета в `<figma-name>/design.md`. Токен для API — personal access token у `workspace/keys/figma`, кроки в `workspace.example/README.md`.
+Агент читає загальні правила на початку сесії, тематичні — під задачу, а відповідний SKILL.md — перед виконанням навички. Секрети й реєстри чатів живуть у workspace/ (не в git). Шаблони — workspace.example/. Факти компанії — context/company/. Політики — context/onboarding/. Код і доки продукту — context/products/&lt;product-name&gt;/: репозиторій продукту підключається як git submodule. Макети Figma — context/design/: каталог у catalog.yaml, знімок макета в &lt;figma-name&gt;/design.md. Токен для API — personal access token у workspace/keys/figma, кроки в workspace.example/README.md.
 
 ## Що всередині
 
