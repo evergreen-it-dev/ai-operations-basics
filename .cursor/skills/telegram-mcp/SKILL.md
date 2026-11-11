@@ -22,6 +22,8 @@ bun auth
 bun dev
 ```
 
+Windows: один скрипт робить ключі, `.env` і `bun install` — `powershell -ExecutionPolicy Bypass -File tools\telegram-mcp\scripts\setup_windows.ps1`. Сервер потім — `tools\telegram-mcp\scripts\run_telegram_mcp.cmd`.
+
 Сесія в `.env` і `bot-data/` — це пароль. У git не комітити.
 
 ## Безпека

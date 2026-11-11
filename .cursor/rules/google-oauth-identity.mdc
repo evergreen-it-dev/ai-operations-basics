@@ -1,13 +1,17 @@
 ---
 description: >-
-  Перед Gmail і Drive перевірити, що OAuth-токен належить email з workspace/user.md.
+  Перед Gmail і Drive перевірити, що коннектор або OAuth-токен належить email з workspace/user.md.
   Якщо інший акаунт — стоп і явне підтвердження.
 alwaysApply: false
 ---
 
 # Google OAuth — особа
 
-Перед Gmail або Drive:
+Перед Gmail або Drive.
+
+Готовий коннектор: подивись акаунт, під яким він підключений (профіль, email), і звір з `workspace/user.md`. Далі та сама таблиця.
+
+Скрипти з `tools/google`:
 
 ```bash
 cd tools/google

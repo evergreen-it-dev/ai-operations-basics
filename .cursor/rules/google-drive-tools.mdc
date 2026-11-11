@@ -9,6 +9,6 @@ alwaysApply: false
 
 Перед операцією — rule google-oauth-identity.
 
-Дії з диском — skill `.cursor/skills/google-drive-tools/SKILL.md`.
+Коннектор Google Drive підключений або є в каталозі середовища — працюй через нього (правило connectors). Інакше — skill `.cursor/skills/google-drive-tools/SKILL.md`.
 
 Запис, шаринг і переміщення — після явного підтвердження.

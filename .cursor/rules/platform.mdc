@@ -1,0 +1,55 @@
+---
+description: >-
+  ОС користувача (macOS, Windows, Linux) агент визначає сам із середовища, не питає.
+  Команди в доках записані для macOS і Linux; на Windows перекладай за таблицею.
+  Не зашивати абсолютні шляхи й Homebrew у файли репозиторію.
+alwaysApply: true
+---
+
+# Платформа
+
+## Яка ОС
+
+Не питай користувача, яка в нього машина. Визнач сам, від першої ж команди:
+
+1. Поле `OS` у `workspace/user.md`, якщо воно заповнене.
+2. Середовище агента: рядок Platform у системному контексті (`darwin`, `win32`, `linux`), шлях робочої теки (`C:\…` — Windows), оболонка (PowerShell, cmd — Windows).
+3. Якщо сумнів лишився — одна команда: `python -c "import platform; print(platform.system())"` або `uname -s`.
+
+Під час налаштування `workspace/` запиши результат у поле `OS` файлу `workspace/user.md`. Скрипт `tools/workspace/setup_workspace.py` робить це сам.
+
+Далі давай команди одразу для цієї ОС. Не показуй мак-команду людині на Windows із приміткою «на Windows інакше».
+
+## Команди на Windows
+
+У SKILL.md і README команди записані для macOS і Linux. На Windows (PowerShell) перекладай так:
+
+| macOS, Linux | Windows, PowerShell |
+|---|---|
+| `python3 script.py` | `py -3 script.py` |
+| `python3 -m venv .venv` | `py -3 -m venv .venv` |
+| `./.venv/bin/python` | `.\.venv\Scripts\python.exe` |
+| `./.venv/bin/pip` | `.\.venv\Scripts\pip.exe` |
+| `make agent-bridge` | `py -3 tools/agents/sync_agent_bridge.py` |
+| `make agent-bridge-check` | `py -3 tools/agents/sync_agent_bridge.py --check` |
+| `cp a b` | `Copy-Item a b` |
+| `mkdir -p a/b` | `New-Item -ItemType Directory -Force a/b` |
+| `rm -rf dir` | `Remove-Item -Recurse -Force dir` |
+| `~/.cursor/mcp.json` | `$HOME\.cursor\mcp.json` |
+| `cmd1 && cmd2` | так само в PowerShell 7; у Windows PowerShell 5.1 — два окремі рядки |
+
+Linux — як macOS, але без Homebrew: `uvx`, `bun`, `node` шукай у `PATH`.
+
+Telegram на Windows має готовий сетап: `tools/telegram-mcp/scripts/setup_windows.ps1`.
+
+## Символічні посилання на Windows
+
+`.claude/skills`, `.claude/commands`, `.claude/agents` і `.agents/skills` — симлінки на теки в `.cursor/`. На Windows їх створює Git лише з увімкненим Developer Mode і `git config --global core.symlinks true` до клонування. Інакше на їхньому місці лежать текстові файли з шляхом. Скрипт `sync_agent_bridge.py` замінює такі файли на симлінк, а якщо прав немає — на directory junction.
+
+## Що не класти в репозиторій
+
+- Абсолютні шляхи до домашньої теки: `/Users/<ім'я>/…`, `C:\Users\<ім'я>\…`. У коді — `Path.home()`, у доках — `~`.
+- Шляхи Homebrew (`/opt/homebrew/bin/…`) як єдиний варіант. Бінарник шукай через `shutil.which`, у конфігах MCP пиши просто `uvx`, `node`, `bun`.
+- `/tmp` у прикладах. Результати — у `output/<канал>/` або `tasks/<task-name>/`.
+- Команди лише для macOS: `open`, `pbcopy`, `osascript`, `security`, `brew`. Якщо без них ніяк — додай варіант для Windows і Linux.
+- Скрипти npm із `rm`, `cp`, `VAR=value cmd`. Для них є Node (`node -e "…"`) або Bun Shell.

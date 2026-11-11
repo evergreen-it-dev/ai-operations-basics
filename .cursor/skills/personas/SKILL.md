@@ -16,11 +16,13 @@ description: >-
 
 Ті самі канали, що й для tone of voice. Не починай, поки немає доступу:
 
-1. Gmail — skill `gmail-tools`. Акаунт збігається з email у `workspace/user.md`.
-2. Telegram — skill `telegram-mcp`.
-3. Teams — skill `teams-connect`, реєстр `workspace/teams-chats.yaml`.
+Кожен канал — спершу готовий коннектор свого середовища (правило connectors), skill нижче — запасний шлях.
 
-Немає каналу — зупинись і підключи його. Не вигадуй токен і chatId.
+1. Gmail — коннектор Gmail або skill `gmail-tools`. Акаунт збігається з email у `workspace/user.md`.
+2. Telegram — skill `telegram-mcp`.
+3. Teams — коннектор Microsoft 365, якщо читає чати, або skill `teams-connect`, реєстр `workspace/teams-chats.yaml`.
+
+Немає каналу — зупинись і підключи його: каталог коннекторів, потім skill. Не вигадуй токен і chatId.
 
 Jira підключай, якщо ключ уже є: по ньому видно, з ким людина ділить задачі. Немає ключа — не блокуй список, просто не вигадуй колег з Jira.
 

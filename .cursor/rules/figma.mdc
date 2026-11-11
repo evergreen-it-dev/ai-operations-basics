@@ -11,4 +11,4 @@ alwaysApply: false
 
 Каталог макетів — `context/design/catalog.yaml`. Знімок одного макета — `context/design/<figma-name>/design.md`: екрани і компоненти з параметрами.
 
-Спочатку читати локальні файли. Далі лише Figma MCP або REST API (`workspace/keys/figma`). Браузер не відкривати.
+Спочатку читати локальні файли. Далі лише Figma MCP — готовий коннектор Figma свого середовища (правило connectors) — або REST API (`workspace/keys/figma`). Браузер не відкривати.

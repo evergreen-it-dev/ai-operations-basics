@@ -8,8 +8,8 @@ OAuth scope: drive (див. oauth_login.py після оновлення _auth.p
   python drive_tool.py list-folder --id <FOLDER_ID>
   python drive_tool.py copy-file --id <FILE_ID> --name "Копія" [--as-gdoc]
   python drive_tool.py share-link --id <FILE_ID> --role commenter
-  python drive_tool.py export-pdf --id <FILE_ID> --out /tmp/file.pdf
-  python drive_tool.py export --id <FILE_ID> --format pdf|docx|pptx|txt --out /tmp/file.pdf
+  python drive_tool.py export-pdf --id <FILE_ID> --out ../../output/drive/file.pdf
+  python drive_tool.py export --id <FILE_ID> --format pdf|docx|pptx|txt --out ../../output/drive/file.pdf
   python drive_tool.py move-to-folder --id <FILE_ID> --folder <FOLDER_ID>
   python drive_tool.py create-folder --name "Оффер_Іван" --parent <FOLDER_ID>
   python drive_tool.py get-meta --id <FILE_ID>

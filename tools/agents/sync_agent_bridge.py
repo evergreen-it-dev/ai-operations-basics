@@ -4,17 +4,25 @@
 Джерело лишається в `.cursor/`. Codex бачить skills через `.agents/skills`,
 Claude Code — через `.claude/`. Індекс rules генерується в AGENTS.md і CLAUDE.md.
 Звичайні файли й теки на місці очікуваних symlinks не перезаписуються.
+Виняток — заглушка Git на Windows без core.symlinks: текстовий файл, у якому
+записаний шлях посилання. Її скрипт замінює на symlink, а без прав на symlink —
+на directory junction.
 
 Використання:
     python3 tools/agents/sync_agent_bridge.py           # застосувати зміни
     python3 tools/agents/sync_agent_bridge.py --check   # лише перевірити (exit 1 при розбіжності)
+    py -3 tools/agents/sync_agent_bridge.py [--check]   # те саме на Windows
 """
 from __future__ import annotations
 
 import argparse
+import os
 import re
+import stat
 import sys
 from pathlib import Path
+
+IS_WINDOWS = os.name == "nt"
 
 ROOT = Path(__file__).resolve().parents[2]
 
@@ -59,6 +67,53 @@ def parse_frontmatter(path: Path) -> dict[str, str]:
     return out
 
 
+def is_junction(path: Path) -> bool:
+    """Directory junction на Windows (Python < 3.12 не має Path.is_junction)."""
+    if not IS_WINDOWS:
+        return False
+    try:
+        attrs = path.lstat().st_file_attributes  # type: ignore[attr-defined]
+    except (OSError, AttributeError):
+        return False
+    return bool(attrs & stat.FILE_ATTRIBUTE_REPARSE_POINT) and not path.is_symlink()
+
+
+def is_git_stub(link: Path, target: str) -> bool:
+    """Git без core.symlinks кладе замість symlink текстовий файл із шляхом."""
+    if not link.is_file() or link.is_symlink() or link.stat().st_size > 1024:
+        return False
+    content = link.read_text(encoding="utf-8", errors="replace").strip()
+    return content.replace("\\", "/") == target
+
+
+def link_is_valid(link: Path, target: str) -> bool:
+    if link.is_symlink():
+        return link.readlink().as_posix() == target
+    if is_junction(link):
+        return link.resolve() == (link.parent / target).resolve()
+    return False
+
+
+def create_link(link: Path, target: str) -> None:
+    try:
+        link.symlink_to(target, target_is_directory=True)
+    except OSError:
+        if not IS_WINDOWS:
+            raise
+        # Без Developer Mode Windows не дає створити symlink; junction прав не потребує.
+        import _winapi
+
+        _winapi.CreateJunction(str((link.parent / target).resolve()), str(link))
+
+
+def describe(link: Path) -> str:
+    if link.is_symlink():
+        return link.readlink().as_posix()
+    if is_junction(link):
+        return f"junction → {link.resolve()}"
+    return "немає"
+
+
 def ensure_links(check: bool) -> list[str]:
     problems: list[str] = []
     for name, target in LINKS.items():
@@ -66,19 +121,22 @@ def ensure_links(check: bool) -> list[str]:
         if not (link.parent / target).resolve().is_dir():
             problems.append(f"{name}: тека-джерело {target} відсутня")
             continue
-        if link.exists() and not link.is_symlink():
+        stub = is_git_stub(link, target)
+        if link.exists() and not stub and not link.is_symlink() and not is_junction(link):
             problems.append(f"{name}: звичайний файл або тека; збережено без змін")
             continue
-        current = link.readlink().as_posix() if link.is_symlink() else None
-        if current == target:
+        if not stub and link_is_valid(link, target):
             continue
         if check:
+            current = "заглушка Git замість symlink" if stub else describe(link)
             problems.append(f"symlink {name} → {target} відсутній або хибний (зараз: {current})")
             continue
         link.parent.mkdir(exist_ok=True)
-        if link.is_symlink():
+        if stub or link.is_symlink():
             link.unlink()
-        link.symlink_to(target)
+        elif is_junction(link):
+            os.rmdir(link)
+        create_link(link, target)
     return problems
 
 
@@ -135,7 +193,7 @@ def sync_index(filename: str, check: bool) -> list[str]:
         return []
     if check:
         return [f"{path.name}: індекс rules застарів"]
-    path.write_text(updated, encoding="utf-8")
+    path.write_text(updated, encoding="utf-8", newline="\n")
     return []
 
 
@@ -166,6 +224,11 @@ def validate_skills() -> list[str]:
 
 
 def main() -> int:
+    # Консоль Windows часто в cp1251/cp866 і падає на ✓ ✗ та кирилиці.
+    for stream in (sys.stdout, sys.stderr):
+        if hasattr(stream, "reconfigure"):
+            stream.reconfigure(encoding="utf-8", errors="replace")
+
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--check", action="store_true", help="лише перевірити, нічого не писати")
     args = parser.parse_args()

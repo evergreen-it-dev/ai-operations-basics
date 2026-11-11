@@ -1,7 +1,8 @@
 ---
 description: >-
   Активація: Gmail, вхідні, непрочитані, /gmail-fetch.
-  Команди з tools/google, skill gmail-tools. Ключі API не вигадувати.
+  Спершу готовий коннектор Gmail свого середовища, запасний шлях — skill gmail-tools
+  і tools/google. Ключі API не вигадувати.
 alwaysApply: false
 ---
 
@@ -9,6 +10,6 @@ alwaysApply: false
 
 Перед операцією — rule google-oauth-identity.
 
-Дії з поштою — skill `.cursor/skills/gmail-tools/SKILL.md`.
+Коннектор Gmail підключений або є в каталозі середовища — працюй через нього (правило connectors). Інакше — skill `.cursor/skills/gmail-tools/SKILL.md`.
 
 Slash-команда `/gmail-fetch` веде в той самий skill.

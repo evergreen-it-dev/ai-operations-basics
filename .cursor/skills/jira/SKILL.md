@@ -2,8 +2,8 @@
 name: jira
 description: >-
   Jira: читання і правка задач, JQL, коментар, перехід статусу. On-prem через
-  MCP mcp-atlassian-on-prem і PAT у workspace/keys/jira-onprem. Cloud — окремий
-  MCP, якщо його підключили. Застосовувати на Jira, тікет, задачу, JQL.
+  MCP mcp-atlassian-on-prem і PAT у workspace/keys/jira-onprem. Cloud — готовий
+  коннектор Atlassian середовища. Застосовувати на Jira, тікет, задачу, JQL.
 ---
 
 # Jira
@@ -14,7 +14,7 @@ description: >-
 
 ```
 On-prem (JIRA_URL з workspace/keys/jira-onprem) — MCP mcp-atlassian-on-prem
-Cloud — той MCP, який підключили окремо
+Cloud — готовий коннектор Atlassian свого середовища (правило connectors)
 Один тікет / JQL / коментар / перехід → MCP
 ```
 

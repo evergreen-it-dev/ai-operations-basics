@@ -9,6 +9,6 @@ alwaysApply: false
 
 Прочитай .cursor/skills/jira/SKILL.md. Для підключення — .cursor/skills/jira-connect/SKILL.md і tools/jira/README.md.
 
-Використовуй API/MCP та локальні скрипти інтеграції. Не відкривай Jira через браузер, зокрема коли MCP недоступний. Перевір підключення за інструкцією навички.
+Jira Cloud — спершу готовий коннектор Atlassian свого середовища (правило connectors). On-prem (Server, Data Center) — MCP mcp-atlassian-on-prem і скрипти з tools/jira. Не відкривай Jira через браузер, зокрема коли MCP недоступний. Перевір підключення за інструкцією навички.
 
 URL, проєкт і ключ задачі бери з налаштувань або запиту користувача. Не використовуй плейсхолдери як робочі значення.

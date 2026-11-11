@@ -27,6 +27,8 @@ make agent-bridge
 make agent-bridge-check
 ```
 
+На Windows без make — py -3 tools/agents/sync_agent_bridge.py і те саме з --check. Команди для своєї ОС агент бере з правила platform.
+
 Скрипт створює символічні посилання й оновлює індекси правил у AGENTS.md та CLAUDE.md. Звичайні файли й теки на місці посилань він не перезаписує. Перевірка з --check нічого не змінює. Для клону без підтримки symlinks агент може читати SKILL.md напряму з .cursor/skills/; для автоматичного виявлення навичок потрібні робочі символічні посилання.
 
 ## Як це зібрано
@@ -34,6 +36,8 @@ make agent-bridge-check
 Агент читає загальні правила на початку сесії, тематичні — під задачу, а відповідний SKILL.md — перед виконанням навички. Секрети й реєстри чатів живуть у workspace/ (не в git). Шаблони — workspace.example/. Факти компанії — context/company/. Політики — context/onboarding/. Код і доки продукту — context/products/&lt;product-name&gt;/: репозиторій продукту підключається як git submodule. Макети Figma — context/design/: каталог у catalog.yaml, знімок макета в &lt;figma-name&gt;/design.md. Токен для API — personal access token у workspace/keys/figma, кроки в workspace.example/README.md.
 
 ## Що всередині
+
+Для каналів спершу готові коннектори Claude, Codex чи Cursor (правило `connectors`). Скрипти в `tools/` — запасний шлях і те, чого в каталогах немає: особистий Telegram, Jira і Confluence on-prem, Folio, масовий імпорт Confluence.
 
 | Канал | Skill | Код |
 |---|---|---|

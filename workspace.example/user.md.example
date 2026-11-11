@@ -7,6 +7,7 @@
 - **Role:** [роль, компанія]
 - **Language:** uk
 - **Timezone:** Europe/Kyiv
+- **OS:** [macos | windows | linux — заповнює setup_workspace.py або агент із середовища, не питати]
 
 ## Accounts
 

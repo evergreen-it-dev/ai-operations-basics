@@ -9,9 +9,11 @@ description: >-
 
 # Gmail (локальні скрипти)
 
+Це запасний шлях. Якщо в середовищі є готовий коннектор Gmail — працюй через нього (правило connectors), особа і підтвердження перед відправкою ті самі.
+
 **OAuth-особа:** перед будь-якою операцією — rule **google-oauth-identity** (`.cursor/rules/google-oauth-identity.mdc`): `check_oauth_identity.py`. При MISMATCH — стоп і **явне** підтвердження користувача.
 
-Усі команди з каталогу **`tools/google`** відносно кореня цього репозиторію. Інтерпретатор: **`tools/google/.venv/bin/python`**. Робоча директорія для викликів: **`tools/google`**.
+Усі команди з каталогу **`tools/google`** відносно кореня цього репозиторію. Інтерпретатор: **`tools/google/.venv/bin/python`** на macOS і Linux, **`tools\google\.venv\Scripts\python.exe`** на Windows. Нижче команди записані для macOS і Linux; на Windows переклади за правилом platform. Робоча директорія для викликів: **`tools/google`**.
 
 **Активний GCP-профіль:** `workspace/keys/google` (шаблон `workspace.example/keys/google.example`) — `project_id`, шляхи до OAuth client secret, token, service account. У коді немає жорсткої прив’язки до проєкту. Перевірка: `oauth_login.py --show-profile`.
 

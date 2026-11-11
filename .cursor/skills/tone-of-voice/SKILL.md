@@ -18,11 +18,13 @@ description: >-
 
 Не збирай корпус, поки немає живого доступу до трьох каналів:
 
-1. Gmail — skill `gmail-tools`. Перевірка: `tools/google` і `check_oauth_identity.py`. Акаунт має збігатися з email у `workspace/user.md`.
-2. Telegram — skill `telegram-mcp`. Сесія локального MCP піднята.
-3. Teams — skill `teams-connect`. Реєстр `workspace/teams-chats.yaml` заповнений.
+Кожен канал — спершу готовий коннектор свого середовища (правило connectors), skill нижче — запасний шлях.
 
-Якщо каналу немає — зупинись і підключи його тим skill. Не вигадуй токен і chatId.
+1. Gmail — коннектор Gmail або skill `gmail-tools`. Акаунт має збігатися з email у `workspace/user.md`.
+2. Telegram — skill `telegram-mcp`. Сесія локального MCP піднята.
+3. Teams — коннектор Microsoft 365, якщо читає чати, або skill `teams-connect`. Реєстр `workspace/teams-chats.yaml` заповнений.
+
+Якщо каналу немає — зупинись і підключи його: каталог коннекторів, потім skill. Не вигадуй токен і chatId.
 
 Четверта система — та, де людина сама пише задачі. Типово Jira (skill `jira`). Якщо ключа немає, спитай, що підключити замість неї. Без четвертого джерела типи «задача» не вигадуй.
 
@@ -43,7 +45,7 @@ description: >-
 
 Кожне повідомлення в корпусі: канал, тип (лист 1-1 / чат 1-1 / група / задача), дата, короткий текст його словами. Імена інших людей у корпусі можна залишити, у `my_voice.md` їх не перенось.
 
-Команди Gmail, з каталогу `tools/google`:
+Через коннектор Gmail — пошук `in:sent newer_than:180d`, до 40 листів. Без коннектора — з каталогу `tools/google`:
 
 ```bash
 ./.venv/bin/python gmail_tool.py messages -q 'in:sent newer_than:180d' --max 40 --format json --save

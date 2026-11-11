@@ -1,7 +1,7 @@
 {
   "mcpServers": {
     "mcp-atlassian-on-prem": {
-      "command": "/opt/homebrew/bin/uvx",
+      "command": "uvx",
       "args": ["mcp-atlassian"],
       "env": {
         "JIRA_URL": "https://jira.example.com",

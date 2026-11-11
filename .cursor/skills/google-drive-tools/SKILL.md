@@ -10,6 +10,7 @@ description: >-
 Спільний OAuth з Gmail. Профіль `workspace/keys/google`. Перед дією — rule google-oauth-identity.
 
 ```bash
+# Запасний шлях. Готовий коннектор Google Drive — спершу (правило connectors).
 cd tools/google
 ./.venv/bin/python oauth_login.py
 ./.venv/bin/python drive_tool.py list-folder --id <FOLDER_ID>

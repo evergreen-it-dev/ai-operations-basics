@@ -5,7 +5,7 @@
 ## Як почати
 
 1. Прочитай README.md і правила «Завжди застосовувати» з індексу нижче. Уже прочитані в цій сесії файли повторно не відкривай, якщо вони не змінилися.
-2. Перевір workspace/user.md, якщо він є. Явні вказівки користувача щодо мови й задачі мають пріоритет. Відсутність особистого профілю не блокує роботу з кодом і правилами.
+2. Визнач ОС (macOS, Windows, Linux) із середовища, не питаючи, — правило platform. Перевір workspace/user.md, якщо він є. Явні вказівки користувача щодо мови й задачі мають пріоритет. Відсутність особистого профілю не блокує роботу з кодом і правилами.
 3. Відкрий тематичне правило та відповідний SKILL.md. Читай лише потрібний для задачі контекст, а не всі навички, журнали й дампи.
 4. Перед змінами перевір git status і локальні AGENTS.md у теках, з якими працюєш. Зберігай чужі незакомічені зміни.
 
@@ -31,6 +31,8 @@ make agent-bridge
 make agent-bridge-check
 ```
 
+На Windows без make — py -3 tools/agents/sync_agent_bridge.py і те саме з --check. Команди для своєї ОС агент бере з правила platform.
+
 Індекси нижче та в CLAUDE.md генеруються скриптом tools/agents/sync_agent_bridge.py. Не редагуй блоки GENERATED вручну. Міст підключає файли інструкцій; він не встановлює MCP, залежності чи хуки для іншого агента.
 
 ## Де шукати контекст
@@ -38,14 +40,14 @@ make agent-bridge-check
 | Що | Де |
 |---|---|
 | Користувач, мова, часовий пояс | workspace/user.md; шаблони налаштування — workspace.example/ |
-| Факти про компанію та адресатів | context/company/; особисті доповнення — workspace/personas.md |
+| Факти про компанію, команда й адресати | context/company/, команда — context/company/teammates.md; особисті доповнення — workspace/personas.md. Злиття — правило shared-context-merge |
 | Політики й база про агентів | context/onboarding/; імпорт Confluence — context/docs/confluence/ |
 | Код і доки продукту | context/products/&lt;product-name&gt;/; для підключення репозиторію — навичка products |
 | Макети Figma й дизайн-системи | context/design/; навички figma і design-md |
 | Голос користувача, операції, задачі | workspace/my_voice.md, workspace/operations.md, workspace/TASKS.md |
 | Пам'ять попередніх чатів | workspace/memory/; відсутній запис не відновлюй із припущень |
 
-Teams — навичка teams-chat-review, правила teams-review і teams-privacy. Jira — навичка jira, для підключення — jira-connect. Teams і Jira використовуй лише через API/MCP та локальні скрипти цих інтеграцій, без браузера. Якщо підключення немає, перевір відповідну інструкцію; не підміняй API браузером.
+Teams — навичка teams-chat-review, правила teams-review і teams-privacy. Jira — навичка jira, для підключення — jira-connect. Канали (Gmail, календар, Drive, Jira, Teams, Figma) — спершу готовий коннектор свого середовища, правило connectors; скрипти з tools/ — запасний шлях. Teams і Jira — лише через API/MCP, без браузера. Якщо підключення немає, перевір відповідну інструкцію; не підміняй API браузером.
 
 Не виводь секрети з workspace/keys/ у чат, логи чи diff. Не вигадуй хости, людей, ролі й факти замість відсутнього контексту.
 
@@ -74,8 +76,10 @@ tasks/, output/ і workspace/ у git не входять. Нові разові 
 
 - **[`00_project-orientation`](.cursor/rules/00_project-orientation.mdc)** — Спільна точка входу для Codex, Claude Code і Cursor. Правила й навички в .cursor застосовуються до всіх агентів; почни з AGENTS.md.
 - **[`agent-data`](.cursor/rules/agent-data.mdc)** — Де Claude, Codex і Cursor кладуть дані. Не створювати .tmp, .build, .codex-build і інші чорнові теки в корені.
+- **[`connectors`](.cursor/rules/connectors.mdc)** — Підключення каналу (Gmail, Calendar, Drive, Jira, Confluence, Teams, Figma тощо): спершу готовий коннектор свого середовища — Claude, Codex чи Cursor. Скрипти й локальні MCP у tools/ — запасний шлях. Назву коннектора не вигадувати.
 - **[`general-writing`](.cursor/rules/general-writing.mdc)** — Загальні правила письма агента: без слопу, головне зверху, без інлайн-коду посеред речення. Для чернетки від імені користувача читай наявні personas і my_voice. Текст назовні перевір за інструкцією writing-editor.
 - **[`one-off-tasks`](.cursor/rules/one-off-tasks.mdc)** — Разова задача ні до чого конкретного: tasks/<task-name>/ з task.md і всіма файлами цієї задачі. Тека не в git.
+- **[`platform`](.cursor/rules/platform.mdc)** — ОС користувача (macOS, Windows, Linux) агент визначає сам із середовища, не питає. Команди в доках записані для macOS і Linux; на Windows перекладай за таблицею. Не зашивати абсолютні шляхи й Homebrew у файли репозиторію.
 - **[`reply-language`](.cursor/rules/reply-language.mdc)** — Мова відповідей береться з workspace/user.md (поле Language). Нові документи — тією ж мовою, що й аудиторія тексту. Іншу мову — лише за явним запитом.
 - **[`workspace-context`](.cursor/rules/workspace-context.mdc)** — Перед узагальненою відповіддю про користувача або компанію читай workspace/user.md і context/company/. Код продукту — context/products/<product-name>, git submodule. Макети Figma — context/design, локальний знімок. Не вигадуй імена, ролі й факти.
 
@@ -89,15 +93,16 @@ tasks/, output/ і workspace/ у git не входять. Нові разові 
 | [`design-md`](.cursor/rules/design-md.mdc) | Активація: дизайн-система, DESIGN.md, designmd, токени UI. Формат designmd.ai. Файл context/design/<slug>/DESIGN.md. Не плутати зі знімком макета design.md. |
 | [`figma`](.cursor/rules/figma.mdc) | Активація: Figma, макет, компонент, варіант, дизайн екрана, context/design. Спочатку локальний знімок. Далі лише Figma MCP або REST API. Браузер не відкривати. |
 | [`folio`](.cursor/rules/folio.mdc) | Активація: Folio, внутрішня вікі, list_spaces, read_page, search_pages, /folio. URL з FOLIO_BASE_URL. Не плутати з Confluence-онбордингом у context/onboarding. |
-| [`gmail-tools`](.cursor/rules/gmail-tools.mdc) | Активація: Gmail, вхідні, непрочитані, /gmail-fetch. Команди з tools/google, skill gmail-tools. Ключі API не вигадувати. |
+| [`gmail-tools`](.cursor/rules/gmail-tools.mdc) | Активація: Gmail, вхідні, непрочитані, /gmail-fetch. Спершу готовий коннектор Gmail свого середовища, запасний шлях — skill gmail-tools і tools/google. Ключі API не вигадувати. |
 | [`google-drive-tools`](.cursor/rules/google-drive-tools.mdc) | Активація: Google Drive, папка на диску, drive_tool. Спільний OAuth з Gmail, skill google-drive-tools. |
-| [`google-oauth-identity`](.cursor/rules/google-oauth-identity.mdc) | Перед Gmail і Drive перевірити, що OAuth-токен належить email з workspace/user.md. Якщо інший акаунт — стоп і явне підтвердження. |
+| [`google-oauth-identity`](.cursor/rules/google-oauth-identity.mdc) | Перед Gmail і Drive перевірити, що коннектор або OAuth-токен належить email з workspace/user.md. Якщо інший акаунт — стоп і явне підтвердження. |
 | [`jira`](.cursor/rules/jira.mdc) | Активація: Jira, тікет, JQL, коментар або перехід статусу задачі Jira. Навичка jira; доступ лише через API/MCP, без браузера. |
 | [`mermaid-flowcharts`](.cursor/rules/mermaid-flowcharts.mdc) | Активація: Mermaid, flowchart, блок-схема, діаграма процесу, graph у Markdown. Перед блоком mermaid — skill mermaid-flowcharts. |
 | [`onboarding`](.cursor/rules/onboarding.mdc) | Загальні питання про компанію, політики, відпустки, «де це написано». Спочатку skill onboarding і context/onboarding. Сетап репозиторію: Confluence, Figma, макети, доки продуктів, tone of voice, персони, реєстр операцій — workspace.example/README.md. |
 | [`operations-analysis`](.cursor/rules/operations-analysis.mdc) | Активація: реєстр операцій, чим я зайнятий, operations.md, календар і чати за місяць, затреканий час, /operations-analysis. |
 | [`personas`](.cursor/rules/personas.mdc) | Активація: персони, teammates, з ким листуюсь, хто в команді, /personas. Люди з чатів і листів, без вигаданих ролей. |
 | [`products`](.cursor/rules/products.mdc) | Активація: код або доки продукту, context/products, репозиторій продукту. Тека context/products/<product-name> — git submodule, окремий клон репо. |
+| [`shared-context-merge`](.cursor/rules/shared-context-merge.mdc) | Активація: «перенеси мої напрацювання в спільну репу», «влий у спільний репозиторій», «поділись з командою», «онови спільне». Свій рядок у context/company/teammates.md, факти про компанію з workspace — запропонувати влити. Суперечливі правила й навички — запропонувати злити, перевірити на персональні дані. Нічого не перезаписувати мовчки. |
 | [`teams-privacy`](.cursor/rules/teams-privacy.mdc) | Політика приватності Microsoft Teams: не читати особисті чати, не сканувати весь Teams. Разом із teams-review і teams-chat-review. |
 | [`teams-review`](.cursor/rules/teams-review.mdc) | Активація: Teams, непрочитані, нові чати, /teams, teams review. Питання про Microsoft Teams — skill teams-chat-review. |
 | [`telegram-mcp`](.cursor/rules/telegram-mcp.mdc) | Активація: Telegram, непрочитані, особисті чати, /telegram. Лише локальний MCP у tools/telegram-mcp. Папки-виключення — workspace/telegram-access.yaml. |

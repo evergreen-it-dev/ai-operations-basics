@@ -2,32 +2,30 @@
 
 Шаблони. Живі файли — у `workspace/`, ця тека в `.gitignore`.
 
+macOS, Linux:
+
 ```bash
-mkdir -p workspace/keys workspace/memory
-cp workspace.example/user.md.example workspace/user.md
-cp workspace.example/personas.md.example workspace/personas.md
-cp workspace.example/my_voice.md.example workspace/my_voice.md
-cp workspace.example/teams-access.yaml workspace/teams-access.yaml
-cp workspace.example/teams-chats.yaml workspace/teams-chats.yaml
-cp workspace.example/telegram-access.yaml workspace/telegram-access.yaml
-cp workspace.example/TASKS.md.example workspace/TASKS.md
-cp workspace.example/operations.md.example workspace/operations.md
-cp workspace.example/keys/google.example workspace/keys/google
-cp workspace.example/keys/jira-onprem.example workspace/keys/jira-onprem
-cp workspace.example/keys/folio.example workspace/keys/folio
-cp workspace.example/keys/telegram.example workspace/keys/telegram
-cp workspace.example/keys/confluence.example workspace/keys/confluence
-cp workspace.example/keys/figma.example workspace/keys/figma
+python3 tools/workspace/setup_workspace.py
 ```
+
+Windows (PowerShell):
+
+```powershell
+py -3 tools/workspace/setup_workspace.py
+```
+
+Скрипт створює `workspace/keys` і `workspace/memory`, копіює шаблони, яких ще немає, і записує ОС у поле `OS` файлу `workspace/user.md`. Наявні файли не перезаписує.
 
 Після копіювання заміни плейсхолдери. Секрети в git не класти.
 
+ОС агент визначає сам із середовища і не питає. Команди в SKILL.md записані для macOS і Linux, на Windows агент перекладає їх за правилом `.cursor/rules/platform.mdc`.
+
 ## Що зробити далі
 
-Підключи джерела і зніми локальні копії. Немає URL або токена — спитай, не вигадуй хост і репозиторій.
+Підключи джерела і зніми локальні копії. Для кожного каналу спершу готовий коннектор свого агента: Claude, Codex чи Cursor (правило `.cursor/rules/connectors.mdc`). Ключі в `workspace/keys/` і скрипти з `tools/` потрібні лише там, де готового коннектора немає: особистий Telegram, Jira і Confluence on-prem, Folio. Немає URL або токена — спитай, не вигадуй хост і репозиторій.
 
 1. Confluence. Заповни `workspace/keys/confluence`. Стягни доку проєктів і продуктів скілом `confluence-import` у `context/docs/confluence/<спейс>/`. Потрібен URL спейсу або кореневої сторінки.
-2. Figma. Заповни `workspace/keys/figma`. Як випустити токен — розділ нижче.
+2. Figma. Спершу готовий коннектор Figma свого агента. Без нього — токен у `workspace/keys/figma`, як випустити — розділ нижче.
 3. Макети. Опиши їх у `context/design/catalog.yaml` і `context/design/<figma-name>/design.md`: екрани і компоненти з параметрами. Скіл `figma`.
 4. Продукти. Репозиторій продукту — submodule у `context/products/<product-name>/`. Скіл `products`. Доку з вікі — пункт 1, не копія коду в `context/company/`.
 5. Tone of voice. Підключи Gmail, Telegram, Teams і систему задач. Скіл `tone-of-voice` збирає 20–30 власних повідомлень (по 5 листів 1-1, чатів 1-1, груп і задач) і пише `workspace/my_voice.md`. Файл локальний, у git не класти.

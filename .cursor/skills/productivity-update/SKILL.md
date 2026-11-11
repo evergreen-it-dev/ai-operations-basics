@@ -61,7 +61,7 @@ Track what's fully decoded vs. what has gaps.
 ### 5. Fill Gaps
 
 Present unknown terms grouped. Add answers to appropriate places:
-- People → `context/company/people.md` or notes in task sub-bullets
+- People → `context/company/teammates.md` or notes in task sub-bullets
 - Projects → relevant `context/` or `docs/` files
 - Acronyms → glossary note in task or local doc
 

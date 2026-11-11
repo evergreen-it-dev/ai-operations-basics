@@ -9,13 +9,13 @@ alwaysApply: false
 
 Запит про Teams — одразу skill `.cursor/skills/teams-chat-review/SKILL.md`.
 
-Доступ лише через API/MCP та локальні скрипти інтеграції. Не відкривай Teams у браузері. Якщо підключення немає — skill .cursor/skills/teams-connect/SKILL.md.
+Доступ лише через API/MCP: готовий коннектор Microsoft 365 свого середовища, якщо він читає чати Teams (правило connectors), або локальний MCP і скрипти з tools/teams. Не відкривай Teams у браузері. Якщо підключення немає — skill .cursor/skills/teams-connect/SKILL.md.
 
 Перед доступом — rule teams-privacy і `workspace/teams-access.yaml`.
 
-Не питати підтвердження на огляд непрочитаних:
+Не питати підтвердження на огляд непрочитаних. Через коннектор — ті самі чати з реєстру і той самий формат відповіді. Через скрипт:
 
 1. `node tools/teams/dump_review.js`
 2. Прочитати свіжий `output/teams/teams_review_*.md` і відповісти в чат
 
-Імена людей брати з `context/company/people.md`, якщо файл є. Не вигадувати скорочення.
+Імена людей брати з `context/company/teammates.md`, якщо файл є. Не вигадувати скорочення.

@@ -27,13 +27,17 @@ def load_dotenv(path: Path) -> dict[str, str]:
 
 def resolve_mcp_command() -> tuple[str, list[str]]:
     """Повертає (command, args) для mcp-atlassian у Cursor MCP."""
-    direct = Path.home() / ".local" / "bin" / "mcp-atlassian"
+    exe = ".exe" if os.name == "nt" else ""
+    local_bin = Path.home() / ".local" / "bin"
+    direct = local_bin / f"mcp-atlassian{exe}"
     if direct.is_file():
         return str(direct), []
+    # PATH першим; далі типові місця встановлення uv (uv-інсталятор, Homebrew на Apple Silicon та Intel).
     for uvx in (
         shutil.which("uvx"),
+        str(local_bin / f"uvx{exe}"),
         "/opt/homebrew/bin/uvx",
-        str(Path.home() / ".local" / "bin" / "uvx"),
+        "/usr/local/bin/uvx",
     ):
         if uvx and Path(uvx).is_file():
             return uvx, ["mcp-atlassian"]
